@@ -1,44 +1,49 @@
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image";
-import { Download, Plus, Trash2, Building2 } from "lucide-react";
+import { Download, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import DominicanRepublicMap from "@/components/DominicanRepublicMap";
-import ProviderCard from "@/components/ProviderCard";
+import AnalysisReportCard, { type ReportData } from "@/components/AnalysisReportCard";
+import ReportForm from "@/components/ReportForm";
 
-interface ProviderData {
-  code: string;
-  name: string;
-  specialty: string;
-  phone: string;
-  address: string;
-  province: string | null;
-  provinceName: string | null;
-}
-
-const emptyProvider: ProviderData = {
-  code: "",
-  name: "",
-  specialty: "",
-  phone: "",
+const emptyReport: ReportData = {
+  centerName: "",
+  centerAlias: "",
+  evaluationDate: "",
+  complexityLevel: "",
+  rnc: "",
+  managerName: "",
+  score: 0,
+  status: "CONDICIONADO",
+  zone: "",
+  radius: "",
   address: "",
+  nearbyProviders: 0,
+  saturationLevel: "",
+  analysisText: "",
+  totalAffiliates: "",
+  totalClaims: "",
+  claimsType: "",
+  totalPSS: "",
+  specializedCenters: "",
+  executiveSummary: "",
+  recommendation: "",
   province: null,
   provinceName: null,
 };
 
 const Index = () => {
-  const [provider, setProvider] = useState<ProviderData>(emptyProvider);
+  const [report, setReport] = useState<ReportData>(emptyReport);
   const [showCard, setShowCard] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const handleChange = (field: keyof ProviderData, value: string) => {
-    setProvider((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof ReportData, value: string | number) => {
+    setReport((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleProvinceSelect = (prov: { id: string; name: string } | null) => {
-    setProvider((prev) => ({
+    setReport((prev) => ({
       ...prev,
       province: prov?.id ?? null,
       provinceName: prov?.name ?? null,
@@ -46,12 +51,12 @@ const Index = () => {
   };
 
   const handleGenerate = () => {
-    if (!provider.code.trim() || !provider.name.trim()) {
-      toast.error("Por favor ingresa al menos el código y nombre del prestador.");
+    if (!report.centerName.trim()) {
+      toast.error("Por favor ingresa al menos el nombre del centro clínico.");
       return;
     }
     setShowCard(true);
-    toast.success("Ficha generada correctamente.");
+    toast.success("Reporte generado correctamente.");
   };
 
   const handleDownload = async () => {
@@ -59,7 +64,7 @@ const Index = () => {
     try {
       const dataUrl = await toPng(cardRef.current, { pixelRatio: 2 });
       const link = document.createElement("a");
-      link.download = `prestador-${provider.code}.png`;
+      link.download = `analisis-${report.centerAlias || report.centerName}.png`;
       link.href = dataUrl;
       link.click();
       toast.success("Imagen descargada.");
@@ -69,7 +74,7 @@ const Index = () => {
   };
 
   const handleClear = () => {
-    setProvider(emptyProvider);
+    setReport(emptyReport);
     setShowCard(false);
   };
 
@@ -79,14 +84,14 @@ const Index = () => {
       <header className="gradient-primary">
         <div className="container mx-auto px-4 py-6 flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
-            <Building2 className="w-5 h-5 text-primary-foreground" />
+            <Activity className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-primary-foreground tracking-tight">
-              MedRD — Registro de Prestadores
+              MedRD — Gestión de Red
             </h1>
             <p className="text-primary-foreground/70 text-sm">
-              República Dominicana
+              Análisis Comparativo de Prestadores
             </p>
           </div>
         </div>
@@ -96,71 +101,12 @@ const Index = () => {
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Left: Form + Map */}
           <div className="space-y-6 animate-fade-in">
-            {/* Form */}
-            <div className="bg-card rounded-lg p-6 shadow-card space-y-4">
-              <h2 className="text-lg font-bold text-card-foreground">
-                Datos del Prestador
-              </h2>
-
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <Label htmlFor="code">Código *</Label>
-                  <Input
-                    id="code"
-                    placeholder="Ej: PSS-001"
-                    value={provider.code}
-                    onChange={(e) => handleChange("code", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="name">Nombre *</Label>
-                  <Input
-                    id="name"
-                    placeholder="Nombre del prestador"
-                    value={provider.name}
-                    onChange={(e) => handleChange("name", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="specialty">Especialidad</Label>
-                  <Input
-                    id="specialty"
-                    placeholder="Ej: Cardiología"
-                    value={provider.specialty}
-                    onChange={(e) => handleChange("specialty", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <Label htmlFor="phone">Teléfono</Label>
-                  <Input
-                    id="phone"
-                    placeholder="809-000-0000"
-                    value={provider.phone}
-                    onChange={(e) => handleChange("phone", e.target.value)}
-                  />
-                </div>
-                <div className="space-y-1.5 sm:col-span-2">
-                  <Label htmlFor="address">Dirección</Label>
-                  <Input
-                    id="address"
-                    placeholder="Dirección del consultorio"
-                    value={provider.address}
-                    onChange={(e) => handleChange("address", e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-3 pt-2">
-                <Button onClick={handleGenerate} className="gap-2">
-                  <Plus className="w-4 h-4" />
-                  Generar Ficha
-                </Button>
-                <Button variant="outline" onClick={handleClear} className="gap-2">
-                  <Trash2 className="w-4 h-4" />
-                  Limpiar
-                </Button>
-              </div>
-            </div>
+            <ReportForm
+              data={report}
+              onChange={handleChange}
+              onGenerate={handleGenerate}
+              onClear={handleClear}
+            />
 
             {/* Map */}
             <div className="bg-card rounded-lg p-6 shadow-card">
@@ -168,15 +114,15 @@ const Index = () => {
                 Seleccionar Ubicación
               </h2>
               <p className="text-sm text-muted-foreground mb-4">
-                Haz clic en una provincia del mapa para asociarla al prestador.
+                Haz clic en una provincia del mapa para asociarla al reporte.
               </p>
               <DominicanRepublicMap
                 onProvinceSelect={handleProvinceSelect}
-                selectedProvince={provider.province}
+                selectedProvince={report.province}
               />
-              {provider.provinceName && (
+              {report.provinceName && (
                 <div className="mt-3 bg-accent/50 rounded-md px-4 py-2 text-sm text-accent-foreground font-medium">
-                  ✓ Provincia seleccionada: {provider.provinceName}
+                  ✓ Provincia seleccionada: {report.provinceName}
                 </div>
               )}
             </div>
@@ -187,7 +133,7 @@ const Index = () => {
             <div className="bg-card rounded-lg p-6 shadow-card">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-card-foreground">
-                  Vista Previa
+                  Vista Previa del Reporte
                 </h2>
                 {showCard && (
                   <Button onClick={handleDownload} size="sm" className="gap-2">
@@ -199,15 +145,15 @@ const Index = () => {
 
               {showCard ? (
                 <div className="flex justify-center overflow-x-auto">
-                  <ProviderCard ref={cardRef} data={provider} />
+                  <AnalysisReportCard ref={cardRef} data={report} />
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                    <Building2 className="w-8 h-8 text-muted-foreground" />
+                    <Activity className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <p className="text-muted-foreground text-sm">
-                    Completa los datos y haz clic en "Generar Ficha" para ver la vista previa.
+                    Completa los datos y haz clic en "Generar Reporte" para ver la vista previa.
                   </p>
                 </div>
               )}
