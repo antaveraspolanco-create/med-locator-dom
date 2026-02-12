@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { MapPin, Building2, Calendar, Users, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, Navigation } from "lucide-react";
+import { MapPin, Building2, Calendar, Users, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, Pill } from "lucide-react";
 
 export interface NearbyCenter {
   nombre: string;
@@ -32,7 +32,6 @@ export interface ReportData {
   recommendation: string;
   province: string | null;
   provinceName: string | null;
-  // New fields
   centerLat: string;
   centerLng: string;
   nearbyCenters: NearbyCenter[];
@@ -40,6 +39,12 @@ export interface ReportData {
   kpiPacientes: string;
   kpiCosto: string;
   kpiResolutividad: string;
+  // Siniestralidad fields
+  siniestralityTotal: string;
+  costoCPE: string;
+  desviacionFarmacia: string;
+  especialidadComparada: string;
+  desviacionEspecialidad: string;
 }
 
 interface Props {
@@ -47,17 +52,21 @@ interface Props {
 }
 
 const statusConfig = {
-  APROBADO: { color: "bg-secondary text-secondary-foreground", icon: CheckCircle, label: "Aprobado ✅" },
-  CONDICIONADO: { color: "bg-amber-500 text-white", icon: AlertTriangle, label: "Condicionado 🟡" },
-  DECLINADO: { color: "bg-destructive text-destructive-foreground", icon: XCircle, label: "Declinado 🔴" },
+  APROBADO: { color: "bg-secondary text-secondary-foreground", icon: CheckCircle, label: "Aprobado ✅", borderColor: "#2A9D8F" },
+  CONDICIONADO: { color: "bg-amber-500 text-white", icon: AlertTriangle, label: "Condicionado 🟡", borderColor: "#FFB703" },
+  DECLINADO: { color: "bg-destructive text-destructive-foreground", icon: XCircle, label: "Declinado 🔴", borderColor: "#D90429" },
 };
+
+function getScoreColor(score: number): string {
+  if (score < 21) return "#D90429";
+  if (score <= 25) return "#FFB703";
+  return "#2A9D8F";
+}
 
 function buildStaticMapUrl(data: ReportData): string | null {
   if (!data.centerLat || !data.centerLng) return null;
   let url = `https://maps.googleapis.com/maps/api/staticmap?center=${data.centerLat},${data.centerLng}&zoom=14&size=680x280&maptype=roadmap&scale=2`;
-  // Main marker (red)
   url += `&markers=color:red%7Clabel:P%7C${data.centerLat},${data.centerLng}`;
-  // Nearby centers (blue)
   data.nearbyCenters.forEach((c, i) => {
     if (c.lat && c.lng) {
       url += `&markers=color:blue%7Clabel:${i + 1}%7C${c.lat},${c.lng}`;
@@ -76,6 +85,7 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
 
   const sc = statusConfig[data.status];
   const mapUrl = buildStaticMapUrl(data);
+  const scoreColor = getScoreColor(data.score);
 
   return (
     <div
@@ -95,7 +105,7 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
                 className="text-base font-bold text-primary-foreground tracking-tight"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Resumen Análisis Comparativo
+                Resumen Ejecutivo de Siniestralidad
               </h2>
               <p className="text-primary-foreground/70 text-xs">
                 Departamento de Gestión de Red y Contratación
@@ -106,56 +116,79 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
         </div>
       </div>
 
-      {/* Center Info */}
+      {/* Center Info + Score */}
       <div className="px-6 py-4 border-b border-border">
-        <div className="flex items-start gap-2 mb-2">
-          <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-          <div>
-            <p className="text-xs text-muted-foreground">Centro Clínico</p>
-            <p className="font-bold text-sm">[{data.centerName}] <span className="text-muted-foreground font-normal">[{data.centerAlias}]</span></p>
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-start gap-2 mb-2">
+              <Building2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+              <div>
+                <p className="text-xs text-muted-foreground">Centro Clínico</p>
+                <p className="font-bold text-sm">
+                  🏥 [{data.centerName}]{" "}
+                  <span className="text-muted-foreground font-normal">[{data.centerAlias}]</span>
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 mt-3 text-xs">
+              <InfoLine label="Periodo Evaluado" value={data.evaluationDate} />
+              <InfoLine label="Nivel Complejidad" value={data.complexityLevel} />
+              <InfoLine label="RNC" value={data.rnc} />
+              <InfoLine label="Gerencia" value={data.managerName} />
+            </div>
           </div>
-        </div>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 mt-3 text-xs">
-          <InfoLine label="Periodo Evaluado" value={data.evaluationDate} />
-          <InfoLine label="Nivel Complejidad" value={data.complexityLevel} />
-          <InfoLine label="RNC" value={data.rnc} />
-          <InfoLine label="Gerencia" value={data.managerName} />
-        </div>
 
-        {/* Score badge */}
-        <div className="mt-4 flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground font-medium">Puntaje</span>
-            <span className="text-2xl font-extrabold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          {/* Score Box - Semáforo style */}
+          <div
+            className="ml-4 rounded-lg px-4 py-3 text-center text-white min-w-[100px] shrink-0"
+            style={{ backgroundColor: scoreColor }}
+          >
+            <span className="text-[10px] font-bold uppercase tracking-wider block">Puntaje</span>
+            <span
+              className="text-3xl font-extrabold block leading-tight"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
               {data.score}
             </span>
+            <span className="text-[10px] block mt-0.5">{data.status}</span>
           </div>
-          <span className={`px-3 py-1 rounded-full text-xs font-bold ${sc.color}`}>
-            {sc.label}
-          </span>
         </div>
       </div>
 
       {/* Zone & Competition */}
       <div className="px-6 py-4 border-b border-border">
-        <h3 className="text-xs font-bold text-primary mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+        <h3 className="text-xs font-bold mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#023E8A", borderBottom: "2px solid #eee", paddingBottom: "5px" }}>
           🌍 Análisis de Zona y Competencia
         </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-accent/40 rounded-md p-3">
-            <p className="text-[10px] font-semibold text-accent-foreground mb-1.5">Ubicación & Radio</p>
-            <p className="text-xs">{data.zone}</p>
-            <p className="text-xs text-muted-foreground mt-1">Radio de influencia: {data.radius} 📍🗺</p>
+        <div className="grid grid-cols-2 gap-0 rounded-md overflow-hidden" style={{ border: "1px solid hsl(var(--border))", backgroundColor: "hsl(210 40% 98%)" }}>
+          <div className="p-3" style={{ borderRight: "1px solid hsl(var(--border))" }}>
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Ubicación & Radio</p>
+            <p className="text-xs font-medium">{data.zone}</p>
+            <p className="text-xs text-muted-foreground mt-1">Radio de influencia: <strong>{data.radius}</strong></p>
             <p className="text-[10px] text-muted-foreground mt-1">{data.address}</p>
           </div>
-          <div className="bg-accent/40 rounded-md p-3">
-            <p className="text-[10px] font-semibold text-accent-foreground mb-1.5">Prestadores Aledaños</p>
-            <p className="text-xl font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              [{data.nearbyProviders}]
-            </p>
-            <p className="text-xs text-muted-foreground">Centros similares</p>
-            <p className="text-[10px] font-medium text-destructive mt-1">{data.saturationLevel}</p>
+          <div className="p-3">
+            <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">Prestadores Aledaños</p>
+            <p className="text-sm font-medium">[{data.nearbyProviders}] Centros similares</p>
+            {data.saturationLevel && (
+              <p className="text-[10px] font-medium mt-1" style={{ color: "#D90429" }}>{data.saturationLevel}</p>
+            )}
           </div>
+          {/* Comparativo row */}
+          {(data.analysisText || data.especialidadComparada) && (
+            <div className="col-span-2 p-3" style={{ borderTop: "1px solid hsl(var(--border))" }}>
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">Comparativo Especialidad (Peer Group)</p>
+              {data.especialidadComparada && data.desviacionEspecialidad && (
+                <p className="text-xs leading-relaxed">
+                  El costo de <strong>[Especialidad: {data.especialidadComparada}]</strong> en este centro es un{" "}
+                  <strong style={{ color: "#D90429" }}>{data.desviacionEspecialidad}</strong> que el promedio de los centros aledaños a menos de {data.radius}.
+                </p>
+              )}
+              {data.analysisText && (
+                <p className="text-xs leading-relaxed mt-1">{data.analysisText}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Google Static Map */}
@@ -211,81 +244,65 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
             </div>
           </div>
         )}
-
-        {data.analysisText && (
-          <div className="mt-3 bg-muted/50 rounded-md p-3">
-            <p className="text-[10px] font-semibold text-muted-foreground mb-1">Comparativo Especialidad (PSS Institucionales)</p>
-            <p className="text-xs leading-relaxed">{data.analysisText}</p>
-          </div>
-        )}
       </div>
 
-      {/* KPIs */}
-      {(data.kpiPacientes || data.kpiCosto || data.kpiResolutividad) && (
+      {/* KPIs - Siniestralidad style (3 columns) */}
+      <div className="px-6 py-4 border-b border-border">
+        <h3 className="text-xs font-bold mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#023E8A", borderBottom: "2px solid #eee", paddingBottom: "5px" }}>
+          📊 Resumen de Indicadores
+        </h3>
+        <div className="grid grid-cols-3 gap-2">
+          <KpiCard label="Siniestralidad Total" value={data.siniestralityTotal || data.totalClaims ? `$[${data.siniestralityTotal || data.totalClaims}]` : ""} variant="info" />
+          <KpiCard label="Costo Promedio (CPE)" value={data.costoCPE ? `$[${data.costoCPE}]` : (data.kpiCosto ? `$${data.kpiCosto}` : "")} variant="info" />
+          <KpiCard label="Desviación Farmacia" value={data.desviacionFarmacia || ""} variant="danger" />
+        </div>
+      </div>
+
+      {/* Additional Indicators */}
+      {(data.kpiPacientes || data.kpiResolutividad || data.totalAffiliates || data.totalPSS) && (
         <div className="px-6 py-4 border-b border-border">
-          <h3 className="text-xs font-bold text-primary mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-            📈 KPIs de Desempeño
+          <h3 className="text-xs font-bold mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#023E8A" }}>
+            📈 Indicadores Adicionales
           </h3>
-          <div className="grid grid-cols-3 gap-3">
-            {data.kpiPacientes && (
-              <div className="bg-accent/30 rounded-md p-3 text-center">
-                <Users className="w-4 h-4 text-primary mx-auto mb-1" />
-                <p className="text-lg font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{data.kpiPacientes}</p>
-                <p className="text-[10px] text-muted-foreground">Pacientes</p>
-              </div>
-            )}
-            {data.kpiCosto && (
-              <div className="bg-accent/30 rounded-md p-3 text-center">
-                <DollarSign className="w-4 h-4 text-primary mx-auto mb-1" />
-                <p className="text-lg font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{data.kpiCosto}</p>
-                <p className="text-[10px] text-muted-foreground">Costo Promedio</p>
-              </div>
-            )}
-            {data.kpiResolutividad && (
-              <div className="bg-accent/30 rounded-md p-3 text-center">
-                <Activity className="w-4 h-4 text-primary mx-auto mb-1" />
-                <p className="text-lg font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{data.kpiResolutividad}%</p>
-                <p className="text-[10px] text-muted-foreground">Resolutividad</p>
-              </div>
-            )}
+          <div className="grid grid-cols-2 gap-3">
+            {data.totalAffiliates && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Total afiliados por provincia" value={data.totalAffiliates} />}
+            {data.totalPSS && <IndicatorBox icon={<Building2 className="w-3.5 h-3.5" />} label="Total de PSS (Institucionales)" value={`[${data.totalPSS}]`} />}
+            {data.kpiPacientes && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Pacientes Atendidos" value={data.kpiPacientes} />}
+            {data.kpiResolutividad && <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Resolutividad" value={`${data.kpiResolutividad}%`} />}
+            {data.specializedCenters && <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Centros especializados" value={`+${data.specializedCenters}`} />}
           </div>
         </div>
       )}
 
-      {/* Indicators */}
+      {/* Recommendation - styled with left border like the HTML */}
       <div className="px-6 py-4 border-b border-border">
-        <h3 className="text-xs font-bold text-primary mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-          📊 Resumen de Indicadores
-        </h3>
-        <div className="grid grid-cols-2 gap-3">
-          <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Total afiliados por provincia" value={data.totalAffiliates} />
-          <IndicatorBox icon={<DollarSign className="w-3.5 h-3.5" />} label={`Siniestralidad Total - Tipo ${data.claimsType}`} value={`$[${data.totalClaims}]`} />
-          <IndicatorBox icon={<Building2 className="w-3.5 h-3.5" />} label="Total de PSS (Institucionales)" value={`[${data.totalPSS}]`} />
-          <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Centros de estudios especializados" value={`+${data.specializedCenters}`} />
-        </div>
-      </div>
-
-      {/* Recommendation */}
-      <div className="px-6 py-4 border-b border-border">
-        <h3 className="text-xs font-bold text-primary mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-          Recomendación Técnica
-        </h3>
-        {data.executiveSummary && (
-          <div className="mb-2">
-            <p className="text-[10px] font-semibold text-muted-foreground mb-0.5">Resumen Ejecutivo:</p>
-            <p className="text-xs leading-relaxed">{data.executiveSummary}</p>
+        <div
+          className="rounded-md p-4"
+          style={{
+            backgroundColor: data.status === "CONDICIONADO" ? "#fffbeb" : data.status === "DECLINADO" ? "#fff0f0" : "#f0fdf4",
+            borderLeft: `4px solid ${sc.borderColor}`,
+          }}
+        >
+          <h4 className="text-sm font-bold mb-2" style={{ color: data.status === "CONDICIONADO" ? "#92400e" : data.status === "DECLINADO" ? "#991b1b" : "#166534" }}>
+            Recomendación Técnica
+          </h4>
+          {data.executiveSummary && (
+            <div className="mb-2">
+              <p className="text-[10px] font-semibold text-muted-foreground mb-0.5">Resumen Ejecutivo:</p>
+              <p className="text-xs leading-relaxed" style={{ color: "#555" }}>{data.executiveSummary}</p>
+            </div>
+          )}
+          {data.recommendation && (
+            <div className="mb-2">
+              <p className="text-[10px] font-semibold text-muted-foreground mb-0.5">Recomendación:</p>
+              <p className="text-xs leading-relaxed" style={{ color: "#555" }}>{data.recommendation}</p>
+            </div>
+          )}
+          <div className="mt-3">
+            <span className={`px-3 py-1 rounded-full text-xs font-bold ${sc.color}`}>
+              {sc.label}
+            </span>
           </div>
-        )}
-        {data.recommendation && (
-          <div className="mb-2">
-            <p className="text-[10px] font-semibold text-muted-foreground mb-0.5">Recomendación:</p>
-            <p className="text-xs leading-relaxed">{data.recommendation}</p>
-          </div>
-        )}
-        <div className="mt-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-bold ${sc.color}`}>
-            {sc.label}
-          </span>
         </div>
       </div>
 
@@ -302,13 +319,13 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
       )}
 
       {/* Footer */}
-      <div className="px-6 py-3 bg-muted/30">
-        <p className="text-[10px] text-muted-foreground text-center mb-1">
+      <div className="px-6 py-3" style={{ backgroundColor: "#eeeeee" }}>
+        <p className="text-[10px] text-center mb-1" style={{ color: "#888" }}>
           Generado automáticamente por el Sistema de Gestión de Red.
         </p>
         <div className="flex items-center justify-between">
-          <p className="text-[10px] text-muted-foreground italic">Confidencial - Uso Interno Exclusivo</p>
-          <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+          <p className="text-[10px] italic" style={{ color: "#888" }}>Confidencial - Uso Interno Exclusivo</p>
+          <div className="flex items-center gap-1 text-[10px]" style={{ color: "#888" }}>
             <Calendar className="w-3 h-3" />
             <span>Fecha: {data.evaluationDate || today}</span>
           </div>
@@ -325,6 +342,24 @@ function InfoLine({ label, value }: { label: string; value: string }) {
     <div>
       <span className="text-muted-foreground">{label}: </span>
       <span className="font-semibold">[{value}]</span>
+    </div>
+  );
+}
+
+function KpiCard({ label, value, variant }: { label: string; value: string; variant: "info" | "danger" }) {
+  if (!value) return null;
+  return (
+    <div
+      className="rounded-md p-3 text-center"
+      style={{ backgroundColor: variant === "info" ? "#f0f9ff" : "#fff0f0" }}
+    >
+      <span className="text-[10px] block" style={{ color: "#666" }}>{label}</span>
+      <strong
+        className="text-base block mt-0.5"
+        style={{ fontFamily: "'Space Grotesk', sans-serif", color: variant === "info" ? "#0096C7" : "#D90429" }}
+      >
+        {value}
+      </strong>
     </div>
   );
 }
