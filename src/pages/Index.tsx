@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image";
-import { Download, Activity } from "lucide-react";
+import { Download, Activity, Hospital } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import DominicanRepublicMap from "@/components/DominicanRepublicMap";
@@ -116,7 +116,7 @@ const Index = () => {
       <header className="gradient-primary">
         <div className="container mx-auto px-4 py-6 gap-3 border-secondary border-none rounded-md shadow-sm flex items-center justify-center">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
-            <Activity className="w-5 h-5 text-primary-foreground" />
+            <Hospital className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-primary-foreground tracking-tight font-sans text-right">Ars Primera — Gestión de Red
