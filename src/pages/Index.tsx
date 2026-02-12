@@ -38,6 +38,11 @@ const emptyReport: ReportData = {
   kpiPacientes: "",
   kpiCosto: "",
   kpiResolutividad: "",
+  siniestralityTotal: "",
+  costoCPE: "",
+  desviacionFarmacia: "",
+  especialidadComparada: "",
+  desviacionEspecialidad: "",
 };
 
 const Index = () => {

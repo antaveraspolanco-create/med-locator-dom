@@ -152,12 +152,22 @@ const ReportForm = ({ data, onChange, onGenerate, onClear, onAddCenter, onRemove
         <Field label="Resolutividad (%)" id="kpiResolutividad" value={data.kpiResolutividad} onChange={(v) => onChange("kpiResolutividad", v)} placeholder="94" />
       </div>
 
+      {/* Section: Siniestralidad */}
+      <SectionLabel text="Siniestralidad" />
+      <div className="grid sm:grid-cols-2 gap-3">
+        <Field label="Siniestralidad Total" id="siniestralityTotal" value={data.siniestralityTotal} onChange={(v) => onChange("siniestralityTotal", v)} placeholder="Ej: 737.25M" />
+        <Field label="Costo Promedio (CPE)" id="costoCPE" value={data.costoCPE} onChange={(v) => onChange("costoCPE", v)} placeholder="Ej: 2,500.00" />
+        <Field label="Desviación Farmacia" id="desviacionFarmacia" value={data.desviacionFarmacia} onChange={(v) => onChange("desviacionFarmacia", v)} placeholder="Ej: +22%" />
+        <Field label="Especialidad Comparada" id="especialidadComparada" value={data.especialidadComparada} onChange={(v) => onChange("especialidadComparada", v)} placeholder="Ej: Cardiología" />
+        <Field label="Desviación Especialidad" id="desviacionEspecialidad" value={data.desviacionEspecialidad} onChange={(v) => onChange("desviacionEspecialidad", v)} placeholder="Ej: +15% más alto" />
+        <Field label="Tipo Siniestralidad" id="claimsType" value={data.claimsType} onChange={(v) => onChange("claimsType", v)} placeholder="MIPAS" />
+      </div>
+
       {/* Section: Indicators */}
-      <SectionLabel text="Indicadores" />
+      <SectionLabel text="Indicadores Adicionales" />
       <div className="grid sm:grid-cols-2 gap-3">
         <Field label="Total Afiliados Provincia" id="totalAffiliates" value={data.totalAffiliates} onChange={(v) => onChange("totalAffiliates", v)} placeholder="529,930" />
-        <Field label="Siniestralidad Total" id="totalClaims" value={data.totalClaims} onChange={(v) => onChange("totalClaims", v)} placeholder="737.25M" />
-        <Field label="Tipo Siniestralidad" id="claimsType" value={data.claimsType} onChange={(v) => onChange("claimsType", v)} placeholder="MIPAS" />
+        <Field label="Total Siniestralidad (legacy)" id="totalClaims" value={data.totalClaims} onChange={(v) => onChange("totalClaims", v)} placeholder="737.25M" />
         <Field label="Total PSS Institucionales" id="totalPSS" value={data.totalPSS} onChange={(v) => onChange("totalPSS", v)} placeholder="2232" />
         <Field label="Centros Especializados" id="specializedCenters" value={data.specializedCenters} onChange={(v) => onChange("specializedCenters", v)} placeholder="5" />
       </div>
