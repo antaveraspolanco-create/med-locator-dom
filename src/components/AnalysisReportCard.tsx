@@ -1,5 +1,12 @@
 import { forwardRef } from "react";
-import { MapPin, Building2, Calendar, Users, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import { MapPin, Building2, Calendar, Users, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, Navigation } from "lucide-react";
+
+export interface NearbyCenter {
+  nombre: string;
+  lat: string;
+  lng: string;
+  tipo: string;
+}
 
 export interface ReportData {
   centerName: string;
@@ -25,6 +32,14 @@ export interface ReportData {
   recommendation: string;
   province: string | null;
   provinceName: string | null;
+  // New fields
+  centerLat: string;
+  centerLng: string;
+  nearbyCenters: NearbyCenter[];
+  googleApiKey: string;
+  kpiPacientes: string;
+  kpiCosto: string;
+  kpiResolutividad: string;
 }
 
 interface Props {
@@ -37,6 +52,21 @@ const statusConfig = {
   DECLINADO: { color: "bg-destructive text-destructive-foreground", icon: XCircle, label: "Declinado 🔴" },
 };
 
+function buildStaticMapUrl(data: ReportData): string | null {
+  if (!data.centerLat || !data.centerLng) return null;
+  let url = `https://maps.googleapis.com/maps/api/staticmap?center=${data.centerLat},${data.centerLng}&zoom=14&size=680x280&maptype=roadmap&scale=2`;
+  // Main marker (red)
+  url += `&markers=color:red%7Clabel:P%7C${data.centerLat},${data.centerLng}`;
+  // Nearby centers (blue)
+  data.nearbyCenters.forEach((c, i) => {
+    if (c.lat && c.lng) {
+      url += `&markers=color:blue%7Clabel:${i + 1}%7C${c.lat},${c.lng}`;
+    }
+  });
+  if (data.googleApiKey) url += `&key=${data.googleApiKey}`;
+  return url;
+}
+
 const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
   const today = new Date().toLocaleDateString("es-DO", {
     year: "numeric",
@@ -45,6 +75,7 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
   });
 
   const sc = statusConfig[data.status];
+  const mapUrl = buildStaticMapUrl(data);
 
   return (
     <div
@@ -127,6 +158,60 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
           </div>
         </div>
 
+        {/* Google Static Map */}
+        {mapUrl && (
+          <div className="mt-3 rounded-md overflow-hidden border border-border">
+            <img
+              src={mapUrl}
+              alt="Mapa de ubicación del prestador y centros aledaños"
+              className="w-full h-auto"
+              crossOrigin="anonymous"
+            />
+            <div className="bg-muted/50 px-3 py-1.5 flex items-center gap-4 text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-destructive inline-block" /> Prestador (P)
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-primary inline-block" /> Centros Aledaños
+              </span>
+              <span className="ml-auto">Radio: {data.radius}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Nearby Centers Table */}
+        {data.nearbyCenters.length > 0 && (
+          <div className="mt-3">
+            <p className="text-[10px] font-semibold text-muted-foreground mb-1.5">Centros de Cercanía Detectados</p>
+            <div className="border border-border rounded-md overflow-hidden">
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="bg-muted/50">
+                    <th className="text-left px-2.5 py-1.5 text-[10px] font-semibold text-muted-foreground">#</th>
+                    <th className="text-left px-2.5 py-1.5 text-[10px] font-semibold text-muted-foreground">Centro</th>
+                    <th className="text-left px-2.5 py-1.5 text-[10px] font-semibold text-muted-foreground">Tipo</th>
+                    <th className="text-left px-2.5 py-1.5 text-[10px] font-semibold text-muted-foreground">Coordenadas</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.nearbyCenters.map((c, i) => (
+                    <tr key={i} className="border-t border-border">
+                      <td className="px-2.5 py-1.5 font-bold text-primary">{i + 1}</td>
+                      <td className="px-2.5 py-1.5">{c.nombre}</td>
+                      <td className="px-2.5 py-1.5">
+                        <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${c.tipo === "Competencia" ? "bg-destructive/10 text-destructive" : "bg-accent/50 text-accent-foreground"}`}>
+                          {c.tipo}
+                        </span>
+                      </td>
+                      <td className="px-2.5 py-1.5 text-muted-foreground text-[10px]">{c.lat}, {c.lng}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
         {data.analysisText && (
           <div className="mt-3 bg-muted/50 rounded-md p-3">
             <p className="text-[10px] font-semibold text-muted-foreground mb-1">Comparativo Especialidad (PSS Institucionales)</p>
@@ -134,6 +219,38 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
           </div>
         )}
       </div>
+
+      {/* KPIs */}
+      {(data.kpiPacientes || data.kpiCosto || data.kpiResolutividad) && (
+        <div className="px-6 py-4 border-b border-border">
+          <h3 className="text-xs font-bold text-primary mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+            📈 KPIs de Desempeño
+          </h3>
+          <div className="grid grid-cols-3 gap-3">
+            {data.kpiPacientes && (
+              <div className="bg-accent/30 rounded-md p-3 text-center">
+                <Users className="w-4 h-4 text-primary mx-auto mb-1" />
+                <p className="text-lg font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{data.kpiPacientes}</p>
+                <p className="text-[10px] text-muted-foreground">Pacientes</p>
+              </div>
+            )}
+            {data.kpiCosto && (
+              <div className="bg-accent/30 rounded-md p-3 text-center">
+                <DollarSign className="w-4 h-4 text-primary mx-auto mb-1" />
+                <p className="text-lg font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{data.kpiCosto}</p>
+                <p className="text-[10px] text-muted-foreground">Costo Promedio</p>
+              </div>
+            )}
+            {data.kpiResolutividad && (
+              <div className="bg-accent/30 rounded-md p-3 text-center">
+                <Activity className="w-4 h-4 text-primary mx-auto mb-1" />
+                <p className="text-lg font-bold text-primary" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{data.kpiResolutividad}%</p>
+                <p className="text-[10px] text-muted-foreground">Resolutividad</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Indicators */}
       <div className="px-6 py-4 border-b border-border">

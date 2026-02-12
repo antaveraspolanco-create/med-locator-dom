@@ -1,4 +1,4 @@
-import { Building2, Plus, Trash2 } from "lucide-react";
+import { Building2, Plus, Trash2, MapPinPlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,16 +10,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { ReportData } from "./AnalysisReportCard";
+import type { ReportData, NearbyCenter } from "./AnalysisReportCard";
 
 interface Props {
   data: ReportData;
   onChange: (field: keyof ReportData, value: string | number) => void;
   onGenerate: () => void;
   onClear: () => void;
+  onAddCenter: () => void;
+  onRemoveCenter: (index: number) => void;
+  onUpdateCenter: (index: number, field: keyof NearbyCenter, value: string) => void;
 }
 
-const ReportForm = ({ data, onChange, onGenerate, onClear }: Props) => {
+const ReportForm = ({ data, onChange, onGenerate, onClear, onAddCenter, onRemoveCenter, onUpdateCenter }: Props) => {
   return (
     <div className="bg-card rounded-lg p-6 shadow-card space-y-5">
       <h2 className="text-lg font-bold text-card-foreground flex items-center gap-2">
@@ -85,9 +88,68 @@ const ReportForm = ({ data, onChange, onGenerate, onClear }: Props) => {
         <Field label="Prestadores Aledaños" id="nearbyProviders" value={String(data.nearbyProviders)} onChange={(v) => onChange("nearbyProviders", Number(v))} type="number" placeholder="5" />
         <Field label="Nivel de Saturación" id="saturationLevel" value={data.saturationLevel} onChange={(v) => onChange("saturationLevel", v)} placeholder="Ej: Alta saturación de oferta" />
       </div>
+
+      {/* Section: Coordinates & Map */}
+      <SectionLabel text="Mapa y Coordenadas" />
+      <div className="grid sm:grid-cols-2 gap-3">
+        <Field label="Latitud del Centro" id="centerLat" value={data.centerLat} onChange={(v) => onChange("centerLat", v)} placeholder="Ej: 18.4861" />
+        <Field label="Longitud del Centro" id="centerLng" value={data.centerLng} onChange={(v) => onChange("centerLng", v)} placeholder="Ej: -69.9312" />
+        <div className="space-y-1.5 sm:col-span-2">
+          <Label htmlFor="googleApiKey">Google Maps API Key (opcional)</Label>
+          <Input id="googleApiKey" value={data.googleApiKey} onChange={(e) => onChange("googleApiKey", e.target.value)} placeholder="AIza..." />
+        </div>
+      </div>
+
+      {/* Section: Nearby Centers */}
+      <SectionLabel text="Centros de Cercanía" />
+      <div className="space-y-3">
+        {data.nearbyCenters.map((center, idx) => (
+          <div key={idx} className="bg-muted/30 rounded-md p-3 relative">
+            <button
+              type="button"
+              onClick={() => onRemoveCenter(idx)}
+              className="absolute top-2 right-2 text-muted-foreground hover:text-destructive transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <p className="text-[10px] font-bold text-muted-foreground mb-2">Centro #{idx + 1}</p>
+            <div className="grid sm:grid-cols-2 gap-2">
+              <div className="space-y-1">
+                <Label className="text-[11px]">Nombre</Label>
+                <Input className="h-8 text-xs" value={center.nombre} onChange={(e) => onUpdateCenter(idx, "nombre", e.target.value)} placeholder="Clínica Central" />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-[11px]">Tipo</Label>
+                <Input className="h-8 text-xs" value={center.tipo} onChange={(e) => onUpdateCenter(idx, "tipo", e.target.value)} placeholder="Competencia / Similitud" />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-[11px]">Latitud</Label>
+                <Input className="h-8 text-xs" value={center.lat} onChange={(e) => onUpdateCenter(idx, "lat", e.target.value)} placeholder="18.4890" />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-[11px]">Longitud</Label>
+                <Input className="h-8 text-xs" value={center.lng} onChange={(e) => onUpdateCenter(idx, "lng", e.target.value)} placeholder="-69.9350" />
+              </div>
+            </div>
+          </div>
+        ))}
+        <Button variant="outline" size="sm" onClick={onAddCenter} className="gap-2">
+          <MapPinPlus className="w-4 h-4" />
+          Agregar Centro Cercano
+        </Button>
+      </div>
+
       <div className="space-y-1.5">
         <Label htmlFor="analysisText">Texto Comparativo</Label>
         <Textarea id="analysisText" value={data.analysisText} onChange={(e) => onChange("analysisText", e.target.value)} placeholder="En seguimiento al proceso de evaluación..." rows={3} />
+      </div>
+
+      {/* Section: KPIs */}
+      <SectionLabel text="KPIs de Desempeño" />
+      <div className="grid sm:grid-cols-3 gap-3">
+        <Field label="Pacientes" id="kpiPacientes" value={data.kpiPacientes} onChange={(v) => onChange("kpiPacientes", v)} placeholder="145" />
+        <Field label="Costo Promedio" id="kpiCosto" value={data.kpiCosto} onChange={(v) => onChange("kpiCosto", v)} placeholder="2,500.00" />
+        <Field label="Resolutividad (%)" id="kpiResolutividad" value={data.kpiResolutividad} onChange={(v) => onChange("kpiResolutividad", v)} placeholder="94" />
       </div>
 
       {/* Section: Indicators */}
