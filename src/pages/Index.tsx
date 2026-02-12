@@ -42,7 +42,7 @@ const emptyReport: ReportData = {
   costoCPE: "",
   desviacionFarmacia: "",
   especialidadComparada: "",
-  desviacionEspecialidad: "",
+  desviacionEspecialidad: ""
 };
 
 const Index = () => {
@@ -54,32 +54,32 @@ const Index = () => {
     setReport((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleProvinceSelect = (prov: { id: string; name: string } | null) => {
+  const handleProvinceSelect = (prov: {id: string;name: string;} | null) => {
     setReport((prev) => ({
       ...prev,
       province: prov?.id ?? null,
-      provinceName: prov?.name ?? null,
+      provinceName: prov?.name ?? null
     }));
   };
 
   const handleAddCenter = () => {
     setReport((prev) => ({
       ...prev,
-      nearbyCenters: [...prev.nearbyCenters, { nombre: "", lat: "", lng: "", tipo: "Competencia" }],
+      nearbyCenters: [...prev.nearbyCenters, { nombre: "", lat: "", lng: "", tipo: "Competencia" }]
     }));
   };
 
   const handleRemoveCenter = (index: number) => {
     setReport((prev) => ({
       ...prev,
-      nearbyCenters: prev.nearbyCenters.filter((_, i) => i !== index),
+      nearbyCenters: prev.nearbyCenters.filter((_, i) => i !== index)
     }));
   };
 
   const handleUpdateCenter = (index: number, field: keyof NearbyCenter, value: string) => {
     setReport((prev) => ({
       ...prev,
-      nearbyCenters: prev.nearbyCenters.map((c, i) => (i === index ? { ...c, [field]: value } : c)),
+      nearbyCenters: prev.nearbyCenters.map((c, i) => i === index ? { ...c, [field]: value } : c)
     }));
   };
 
@@ -114,13 +114,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="gradient-primary">
-        <div className="container mx-auto px-4 py-6 flex items-center gap-3">
+        <div className="container mx-auto px-4 py-6 gap-3 border-secondary border-none rounded-md shadow-sm flex items-center justify-center">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
             <Activity className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-primary-foreground tracking-tight">
-              MedRD — Gestión de Red
+            <h1 className="text-xl font-bold text-primary-foreground tracking-tight font-sans text-right">Ars Primera — Gestión de Red
+
             </h1>
             <p className="text-primary-foreground/70 text-sm">
               Análisis Comparativo de Prestadores
@@ -139,8 +139,8 @@ const Index = () => {
               onClear={handleClear}
               onAddCenter={handleAddCenter}
               onRemoveCenter={handleRemoveCenter}
-              onUpdateCenter={handleUpdateCenter}
-            />
+              onUpdateCenter={handleUpdateCenter} />
+
 
             <div className="bg-card rounded-lg p-6 shadow-card">
               <h2 className="text-lg font-bold text-card-foreground mb-3">
@@ -151,13 +151,13 @@ const Index = () => {
               </p>
               <DominicanRepublicMap
                 onProvinceSelect={handleProvinceSelect}
-                selectedProvince={report.province}
-              />
-              {report.provinceName && (
-                <div className="mt-3 bg-accent/50 rounded-md px-4 py-2 text-sm text-accent-foreground font-medium">
+                selectedProvince={report.province} />
+
+              {report.provinceName &&
+              <div className="mt-3 bg-accent/50 rounded-md px-4 py-2 text-sm text-accent-foreground font-medium">
                   ✓ Provincia seleccionada: {report.provinceName}
                 </div>
-              )}
+              }
             </div>
           </div>
 
@@ -167,20 +167,20 @@ const Index = () => {
                 <h2 className="text-lg font-bold text-card-foreground">
                   Vista Previa del Reporte
                 </h2>
-                {showCard && (
-                  <Button onClick={handleDownload} size="sm" className="gap-2">
+                {showCard &&
+                <Button onClick={handleDownload} size="sm" className="gap-2">
                     <Download className="w-4 h-4" />
                     Descargar PNG
                   </Button>
-                )}
+                }
               </div>
 
-              {showCard ? (
-                <div className="flex justify-center overflow-x-auto">
+              {showCard ?
+              <div className="flex justify-center overflow-x-auto">
                   <AnalysisReportCard ref={cardRef} data={report} />
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
+                </div> :
+
+              <div className="flex flex-col items-center justify-center py-16 text-center">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
                     <Activity className="w-8 h-8 text-muted-foreground" />
                   </div>
@@ -188,13 +188,13 @@ const Index = () => {
                     Completa los datos y haz clic en "Generar Reporte" para ver la vista previa.
                   </p>
                 </div>
-              )}
+              }
             </div>
           </div>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Index;
