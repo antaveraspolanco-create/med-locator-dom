@@ -4,7 +4,7 @@ import { Download, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import DominicanRepublicMap from "@/components/DominicanRepublicMap";
-import AnalysisReportCard, { type ReportData } from "@/components/AnalysisReportCard";
+import AnalysisReportCard, { type ReportData, type NearbyCenter } from "@/components/AnalysisReportCard";
 import ReportForm from "@/components/ReportForm";
 
 const emptyReport: ReportData = {
@@ -31,6 +31,13 @@ const emptyReport: ReportData = {
   recommendation: "",
   province: null,
   provinceName: null,
+  centerLat: "",
+  centerLng: "",
+  nearbyCenters: [],
+  googleApiKey: "",
+  kpiPacientes: "",
+  kpiCosto: "",
+  kpiResolutividad: "",
 };
 
 const Index = () => {
@@ -47,6 +54,27 @@ const Index = () => {
       ...prev,
       province: prov?.id ?? null,
       provinceName: prov?.name ?? null,
+    }));
+  };
+
+  const handleAddCenter = () => {
+    setReport((prev) => ({
+      ...prev,
+      nearbyCenters: [...prev.nearbyCenters, { nombre: "", lat: "", lng: "", tipo: "Competencia" }],
+    }));
+  };
+
+  const handleRemoveCenter = (index: number) => {
+    setReport((prev) => ({
+      ...prev,
+      nearbyCenters: prev.nearbyCenters.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleUpdateCenter = (index: number, field: keyof NearbyCenter, value: string) => {
+    setReport((prev) => ({
+      ...prev,
+      nearbyCenters: prev.nearbyCenters.map((c, i) => (i === index ? { ...c, [field]: value } : c)),
     }));
   };
 
@@ -80,7 +108,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="gradient-primary">
         <div className="container mx-auto px-4 py-6 flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
@@ -99,16 +126,17 @@ const Index = () => {
 
       <main className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Left: Form + Map */}
           <div className="space-y-6 animate-fade-in">
             <ReportForm
               data={report}
               onChange={handleChange}
               onGenerate={handleGenerate}
               onClear={handleClear}
+              onAddCenter={handleAddCenter}
+              onRemoveCenter={handleRemoveCenter}
+              onUpdateCenter={handleUpdateCenter}
             />
 
-            {/* Map */}
             <div className="bg-card rounded-lg p-6 shadow-card">
               <h2 className="text-lg font-bold text-card-foreground mb-3">
                 Seleccionar Ubicación
@@ -128,7 +156,6 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Right: Preview */}
           <div className="space-y-4 animate-fade-in" style={{ animationDelay: "0.1s" }}>
             <div className="bg-card rounded-lg p-6 shadow-card">
               <div className="flex items-center justify-between mb-4">
