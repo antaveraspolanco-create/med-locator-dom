@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image";
-import { Download, Activity, Hospital } from "lucide-react";
+import { Download, Activity, Hospital, Stethoscope } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import DominicanRepublicMap from "@/components/DominicanRepublicMap";
@@ -126,6 +127,9 @@ const Index = () => {
               Análisis Comparativo de Prestadores
             </p>
           </div>
+          <Link to="/medicos" className="flex items-center gap-2 bg-primary-foreground/20 hover:bg-primary-foreground/30 transition-colors text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg">
+            <Stethoscope className="w-4 h-4" /> Evaluación Médica
+          </Link>
         </div>
       </header>
 
