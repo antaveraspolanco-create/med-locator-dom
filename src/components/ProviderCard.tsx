@@ -81,7 +81,7 @@ const ProviderCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
           <Calendar className="w-3 h-3" />
           <span>Generado: {today}</span>
         </div>
-        <span className="text-xs font-semibold text-primary">MedRD</span>
+        <span className="text-xs font-semibold text-primary">Ars Primera — Gestión de Red</span>
       </div>
     </div>
   );
