@@ -29,7 +29,7 @@ const emptyReport: DoctorReportData = {
   totalProviders: "",
   dictamen: "",
   province: null,
-  provinceName: null,
+  provinceName: null
 };
 
 const DoctorEvaluation = () => {
@@ -41,7 +41,7 @@ const DoctorEvaluation = () => {
     setReport((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleProvinceSelect = (prov: { id: string; name: string } | null) => {
+  const handleProvinceSelect = (prov: {id: string;name: string;} | null) => {
     setReport((prev) => ({ ...prev, province: prov?.id ?? null, provinceName: prov?.name ?? null }));
   };
 
@@ -76,7 +76,7 @@ const DoctorEvaluation = () => {
   return (
     <div className="min-h-screen bg-background">
       <header className="gradient-primary">
-        <div className="container mx-auto px-4 py-6 gap-3 border-secondary border-none rounded-md shadow-sm flex items-center justify-center">
+        <div className="container mx-auto px-4 py-6 gap-3 border-secondary border-none rounded-md shadow-sm flex items-center justify-center text-primary bg-[#015993]">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
             <Stethoscope className="w-5 h-5 text-primary-foreground" />
           </div>
@@ -101,11 +101,11 @@ const DoctorEvaluation = () => {
               <h2 className="text-lg font-bold text-card-foreground mb-3">Seleccionar Ubicación</h2>
               <p className="text-sm text-muted-foreground mb-4">Haz clic en una provincia del mapa para asociarla al reporte.</p>
               <DominicanRepublicMap onProvinceSelect={handleProvinceSelect} selectedProvince={report.province} />
-              {report.provinceName && (
-                <div className="mt-3 bg-accent/50 rounded-md px-4 py-2 text-sm text-accent-foreground font-medium">
+              {report.provinceName &&
+              <div className="mt-3 bg-accent/50 rounded-md px-4 py-2 text-sm text-accent-foreground font-medium">
                   ✓ Provincia seleccionada: {report.provinceName}
                 </div>
-              )}
+              }
             </div>
           </div>
 
@@ -113,30 +113,30 @@ const DoctorEvaluation = () => {
             <div className="bg-card rounded-lg p-6 shadow-card">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-card-foreground">Vista Previa del Reporte</h2>
-                {showCard && (
-                  <Button onClick={handleDownload} size="sm" className="gap-2">
+                {showCard &&
+                <Button onClick={handleDownload} size="sm" className="gap-2">
                     <Download className="w-4 h-4" /> Descargar PNG
                   </Button>
-                )}
+                }
               </div>
-              {showCard ? (
-                <div className="flex justify-center overflow-x-auto">
+              {showCard ?
+              <div className="flex justify-center overflow-x-auto">
                   <DoctorReportCard ref={cardRef} data={report} />
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-16 text-center">
+                </div> :
+
+              <div className="flex flex-col items-center justify-center py-16 text-center">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
                     <Activity className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <p className="text-muted-foreground text-sm">Completa los datos y haz clic en "Generar Reporte" para ver la vista previa.</p>
                 </div>
-              )}
+              }
             </div>
           </div>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default DoctorEvaluation;
