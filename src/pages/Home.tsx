@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="gradient-primary">
-        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3 bg-[#00b389] border-[#092f58]">
+        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3 bg-[#00b389] border-[#092f58] rounded-none shadow-md">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
             <Hospital className="w-5 h-5 text-primary-foreground" />
           </div>
