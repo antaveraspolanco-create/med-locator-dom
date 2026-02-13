@@ -10,7 +10,7 @@ const Home = () => {
             <Hospital className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-primary-foreground tracking-tight font-sans">
+            <h1 className="text-xl font-bold text-primary-foreground tracking-tight font-sans bg-transparent">
               Ars Primera — Gestión de Red
             </h1>
             <p className="text-primary-foreground/70 text-sm">
