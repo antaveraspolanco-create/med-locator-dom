@@ -87,7 +87,7 @@ const DoctorEvaluation = () => {
             <p className="text-primary-foreground/70 text-sm">Análisis Individual de Siniestralidad y Eficiencia</p>
           </div>
           <Link to="/" className="flex items-center gap-2 bg-primary-foreground/20 hover:bg-primary-foreground/30 transition-colors text-primary-foreground text-sm font-medium px-4 py-2 rounded-lg">
-            <Hospital className="w-4 h-4" /> Gestión de Red
+            <Hospital className="w-4 h-4" /> Inicio
           </Link>
         </div>
       </header>
