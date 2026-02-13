@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="gradient-primary">
-        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3">
+        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3 bg-[#00b389]">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
             <Hospital className="w-5 h-5 text-primary-foreground" />
           </div>
@@ -24,8 +24,8 @@ const Home = () => {
         <div className="grid sm:grid-cols-2 gap-6 max-w-2xl w-full">
           <Link
             to="/institucionales"
-            className="group bg-card rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all border border-border hover:border-primary/30 flex flex-col items-center text-center gap-4"
-          >
+            className="group bg-card rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all border border-border hover:border-primary/30 flex flex-col items-center text-center gap-4">
+
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Hospital className="w-8 h-8 text-primary" />
             </div>
@@ -42,8 +42,8 @@ const Home = () => {
 
           <Link
             to="/medicos"
-            className="group bg-card rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all border border-border hover:border-primary/30 flex flex-col items-center text-center gap-4"
-          >
+            className="group bg-card rounded-xl p-8 shadow-card hover:shadow-card-hover transition-all border border-border hover:border-primary/30 flex flex-col items-center text-center gap-4">
+
             <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Stethoscope className="w-8 h-8 text-primary" />
             </div>
@@ -59,8 +59,8 @@ const Home = () => {
           </Link>
         </div>
       </main>
-    </div>
-  );
+    </div>);
+
 };
 
 export default Home;
