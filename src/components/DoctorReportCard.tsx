@@ -66,7 +66,7 @@ function getScoreColor(score: number): string {
 const statusConfig = {
   "VIABLE": { bg: "#2A9D8F", label: "VIABLE ✅", recBg: "#f0fdf4", recBorder: "#2A9D8F", recText: "#166534" },
   "CONDICIONADO": { bg: "#FFB703", label: "CONDICIONADO 🟡", recBg: "#fffbeb", recBorder: "#FFB703", recText: "#92400e" },
-  "NO VIABLE": { bg: "#D90429", label: "NO VIABLE 🔴", recBg: "#fff0f0", recBorder: "#D90429", recText: "#991b1b" },
+  "NO VIABLE": { bg: "#D90429", label: "NO VIABLE 🔴", recBg: "#fff0f0", recBorder: "#D90429", recText: "#991b1b" }
 };
 
 const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
@@ -78,10 +78,10 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
     <div
       ref={ref}
       className="w-[720px] bg-card rounded-lg overflow-hidden shadow-card text-card-foreground"
-      style={{ fontFamily: "'Inter', sans-serif", fontSize: "13px" }}
-    >
+      style={{ fontFamily: "'Inter', sans-serif", fontSize: "13px" }}>
+
       {/* Header */}
-      <div className="gradient-primary px-6 py-5">
+      <div className="gradient-primary px-6 py-5 bg-[#015993] text-[#015993] border-[#015993]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-full bg-primary-foreground/20 flex items-center justify-center">
@@ -137,13 +137,13 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
             <p className="text-sm font-medium">[{data.nearbySpecialists}] Especialistas similares</p>
             {data.zoneCostNote && <p className="text-[10px] font-medium mt-1" style={{ color: "#2A9D8F" }}>{data.zoneCostNote}</p>}
           </div>
-          {data.totalAmount && (
-            <div className="col-span-2 p-3 text-center" style={{ borderTop: "1px solid hsl(var(--border))" }}>
+          {data.totalAmount &&
+          <div className="col-span-2 p-3 text-center" style={{ borderTop: "1px solid hsl(var(--border))" }}>
               <p className="text-lg font-bold" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0096C7" }}>
                 $ [{data.totalAmount}]
               </p>
             </div>
-          )}
+          }
         </div>
       </div>
 
@@ -152,64 +152,64 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
         <SectionHeader emoji="👥" title="Análisis de Red y Distribución" />
         <div className="grid grid-cols-2 gap-3">
           {/* Specialty Distribution */}
-          {data.specialtyDistribution.length > 0 && (
-            <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
+          {data.specialtyDistribution.length > 0 &&
+          <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Médicos por Especialidad</p>
-              {data.specialtyDistribution.map((s, i) => (
-                <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
+              {data.specialtyDistribution.map((s, i) =>
+            <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
                   <span className="text-xs flex items-center gap-1.5">
                     <Stethoscope className="w-3 h-3 text-primary" /> {s.nombre}
                   </span>
                   <span className="text-xs font-bold">[{s.cantidad}]</span>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
 
           {/* Specialty Amounts */}
-          {data.specialtyAmounts.length > 0 && (
-            <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
+          {data.specialtyAmounts.length > 0 &&
+          <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Monto Total por Especialidad</p>
-              {data.specialtyAmounts.map((s, i) => (
-                <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
+              {data.specialtyAmounts.map((s, i) =>
+            <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
                   <span className="text-xs flex items-center gap-1.5">
                     <Stethoscope className="w-3 h-3 text-primary" /> {s.nombre}
                   </span>
                   <span className="text-xs font-bold" style={{ color: "#0096C7" }}>$ [{s.monto}]</span>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
 
           {/* Province Distribution */}
-          {data.provinceDistribution.length > 0 && (
-            <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
+          {data.provinceDistribution.length > 0 &&
+          <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Distribución Médicos por Provincia</p>
-              {data.provinceDistribution.map((p, i) => (
-                <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
+              {data.provinceDistribution.map((p, i) =>
+            <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
                   <span className="text-xs flex items-center gap-1.5">
                     <MapPin className="w-3 h-3 text-primary" /> [{p.nombre}]
                   </span>
                   <span className="text-xs font-bold">[{p.porcentaje}]% Especialistas</span>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
 
           {/* Affiliate Distribution */}
-          {data.affiliateDistribution.length > 0 && (
-            <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
+          {data.affiliateDistribution.length > 0 &&
+          <div className="rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
               <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">Distribución de Afiliados por Provincia</p>
-              {data.affiliateDistribution.map((a, i) => (
-                <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
+              {data.affiliateDistribution.map((a, i) =>
+            <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
                   <span className="text-xs flex items-center gap-1.5">
                     <Users className="w-3 h-3 text-primary" /> [{a.nombre}]
                   </span>
                   <span className="text-xs font-bold">[{a.cantidad}] Afiliados</span>
                 </div>
-              ))}
+            )}
             </div>
-          )}
+          }
         </div>
       </div>
 
@@ -237,14 +237,14 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
       </div>
 
       {/* Province */}
-      {data.provinceName && (
-        <div className="px-6 py-3 border-b border-border">
+      {data.provinceName &&
+      <div className="px-6 py-3 border-b border-border">
           <div className="bg-accent/50 rounded-md px-4 py-2 flex items-center gap-2">
             <MapPin className="w-4 h-4 text-accent-foreground" />
             <span className="text-xs text-accent-foreground font-medium">Ubicación: {data.provinceName}, República Dominicana</span>
           </div>
         </div>
-      )}
+      }
 
       {/* Footer */}
       <div className="px-6 py-3" style={{ backgroundColor: "#eeeeee" }}>
@@ -257,37 +257,37 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>);
+
 });
 
 DoctorReportCard.displayName = "DoctorReportCard";
 
-function InfoLine({ label, value }: { label: string; value: string }) {
+function InfoLine({ label, value }: {label: string;value: string;}) {
   return (
     <div>
       <span className="text-muted-foreground">{label}: </span>
       <span className="font-semibold">[{value}]</span>
-    </div>
-  );
+    </div>);
+
 }
 
-function SectionHeader({ emoji, title }: { emoji: string; title: string }) {
+function SectionHeader({ emoji, title }: {emoji: string;title: string;}) {
   return (
     <h3 className="text-xs font-bold mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#023E8A", borderBottom: "2px solid #eee", paddingBottom: "5px" }}>
       {emoji} {title}
-    </h3>
-  );
+    </h3>);
+
 }
 
-function KpiBox({ label, value }: { label: string; value: string }) {
+function KpiBox({ label, value }: {label: string;value: string;}) {
   if (!value) return null;
   return (
     <div className="rounded-md p-3 text-center" style={{ backgroundColor: "#f0f9ff" }}>
       <span className="text-[10px] block" style={{ color: "#666" }}>{label}</span>
       <strong className="text-base block mt-0.5" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#0096C7" }}>{value}</strong>
-    </div>
-  );
+    </div>);
+
 }
 
 export default DoctorReportCard;
