@@ -94,7 +94,7 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
               <p className="text-primary-foreground/70 text-xs">Análisis Individual de Siniestralidad y Eficiencia</p>
             </div>
           </div>
-          <span className="text-primary-foreground/60 text-[10px] font-medium">MedRD</span>
+          <span className="text-primary-foreground/60 text-[10px] font-medium">Ars Primera — Gestión de Red</span>
         </div>
       </div>
 
