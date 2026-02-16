@@ -82,20 +82,20 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
       style={{ fontFamily: "'Inter', sans-serif", fontSize: "13px" }}>
 
       {/* Header */}
-      <div className="gradient-primary px-6 py-5 bg-[#015993] text-[#015993] border-[#015993]">
+      <div className="w-full px-6 py-5" style={{ backgroundColor: "#015993" }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-primary-foreground/20 flex items-center justify-center">
-              <Stethoscope className="w-5 h-5 text-primary-foreground" />
+            <div className="w-11 h-11 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
+              <Stethoscope className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-primary-foreground tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                Evaluación Médico
+              <h2 className="text-base font-bold text-white tracking-tight" style={{ fontFamily: "'Varela Round', sans-serif" }}>
+                Ars Primera — Evaluación Médica
               </h2>
-              <p className="text-primary-foreground/70 text-xs">Análisis Individual de Siniestralidad y Eficiencia</p>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'Varela Round', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
             </div>
           </div>
-          <span className="text-primary-foreground/60 text-[10px] font-medium">Ars Primera — Gestión de Red</span>
+          <span className="text-[10px] font-medium" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Varela Round', sans-serif" }}>Ars Primera — Gestión de Red</span>
         </div>
       </div>
 
