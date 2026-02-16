@@ -12,6 +12,7 @@ const emptyReport: DoctorReportData = {
   doctorName: "",
   specialty: "",
   providerCode: "",
+  simonCode: "",
   score: 0,
   status: "VIABLE",
   location: "",

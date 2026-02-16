@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="gradient-primary bg-[#00b389] text-[#00b389] border-[#00b389] shadow-sm">
-        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3 bg-[#00b389] border-[#092f58] rounded-none shadow-md">
+      <header className="gradient-primary bg-[#015993] text-[#015993] border-[#015993] shadow-sm">
+        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3 bg-[#015993] border-[#015993] rounded-none shadow-md">
           <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
             <Hospital className="w-5 h-5 text-primary-foreground" />
           </div>
