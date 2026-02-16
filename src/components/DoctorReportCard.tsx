@@ -89,13 +89,13 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
               <Stethoscope className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white tracking-tight" style={{ fontFamily: "'Varela Round', sans-serif" }}>
+              <h2 className="text-base font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
                 Ars Primera — Evaluación Médica
               </h2>
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'Varela Round', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
+              <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'Raleway', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
             </div>
           </div>
-          <span className="text-[10px] font-medium" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Varela Round', sans-serif" }}>Ars Primera — Gestión de Red</span>
+          <span className="text-[10px] font-medium" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Raleway', sans-serif" }}>Ars Primera — Gestión de Red</span>
         </div>
       </div>
 

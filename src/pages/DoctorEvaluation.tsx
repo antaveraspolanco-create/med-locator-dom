@@ -82,12 +82,12 @@ const DoctorEvaluation = () => {
             <Stethoscope className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: "'Varela Round', sans-serif" }}>
+            <h1 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Ars Primera — Evaluación Médica
             </h1>
-            <p className="text-white/70 text-sm" style={{ fontFamily: "'Varela Round', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
+            <p className="text-white/70 text-sm" style={{ fontFamily: "'Raleway', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
           </div>
-          <Link to="/" className="flex items-center gap-2 bg-white/15 hover:bg-white/25 transition-colors text-white text-sm font-medium px-4 py-2 rounded-lg ml-4" style={{ fontFamily: "'Varela Round', sans-serif" }}>
+          <Link to="/" className="flex items-center gap-2 bg-white/15 hover:bg-white/25 transition-colors text-white text-sm font-medium px-4 py-2 rounded-lg ml-4" style={{ fontFamily: "'Raleway', sans-serif" }}>
             <Hospital className="w-4 h-4" /> Inicio
           </Link>
         </div>
