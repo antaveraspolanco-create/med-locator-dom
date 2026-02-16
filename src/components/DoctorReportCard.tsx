@@ -25,6 +25,7 @@ export interface DoctorReportData {
   doctorName: string;
   specialty: string;
   providerCode: string;
+  simonCode: string;
   score: number;
   status: "VIABLE" | "CONDICIONADO" | "NO VIABLE";
   // Zone
@@ -111,7 +112,8 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
             </div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 mt-3 text-xs">
               <InfoLine label="Especialidad" value={data.specialty} />
-              <InfoLine label="Código Prestador" value={data.providerCode} />
+              <InfoLine label="Cédula" value={data.providerCode} />
+              <InfoLine label="Código Simon" value={data.simonCode} />
             </div>
           </div>
           <div className="ml-4 rounded-lg px-4 py-3 text-center text-white min-w-[100px] shrink-0" style={{ backgroundColor: scoreColor }}>
