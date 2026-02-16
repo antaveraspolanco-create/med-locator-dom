@@ -51,6 +51,7 @@ const ReportForm = ({ data, onChange, onGenerate, onClear, onAddCenter, onRemove
           </Select>
         </div>
         <Field label="RNC" id="rnc" value={data.rnc} onChange={(v) => onChange("rnc", v)} placeholder="Ej: 131919766" />
+        <Field label="Código Simon" id="simonCode" value={data.simonCode} onChange={(v) => onChange("simonCode", v)} placeholder="Ej: CÓDIGO-20048" />
         <Field label="Gerencia" id="managerName" value={data.managerName} onChange={(v) => onChange("managerName", v)} placeholder="Ej: KARINA QUEZADA" />
       </div>
 
