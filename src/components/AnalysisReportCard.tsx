@@ -14,6 +14,7 @@ export interface ReportData {
   evaluationDate: string;
   complexityLevel: string;
   rnc: string;
+  simonCode: string;
   managerName: string;
   score: number;
   status: "APROBADO" | "CONDICIONADO" | "DECLINADO";
@@ -134,6 +135,7 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
               <InfoLine label="Periodo Evaluado" value={data.evaluationDate} />
               <InfoLine label="Nivel Complejidad" value={data.complexityLevel} />
               <InfoLine label="RNC" value={data.rnc} />
+              <InfoLine label="Código Simon" value={data.simonCode} />
               <InfoLine label="Gerencia" value={data.managerName} />
             </div>
           </div>

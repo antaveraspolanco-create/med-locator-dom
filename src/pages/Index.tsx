@@ -14,6 +14,7 @@ const emptyReport: ReportData = {
   evaluationDate: "",
   complexityLevel: "",
   rnc: "",
+  simonCode: "",
   managerName: "",
   score: 0,
   status: "CONDICIONADO",
