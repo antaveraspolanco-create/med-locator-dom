@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
-      <header className="gradient-primary bg-[#015993] text-[#015993] border-[#015993] shadow-sm">
-        <div className="container mx-auto px-4 py-6 flex items-center justify-center gap-3 bg-[#015993] border-[#015993] rounded-none shadow-md">
-          <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
-            <Hospital className="w-5 h-5 text-primary-foreground" />
+      <header className="w-full bg-[#015993] shadow-md">
+        <div className="w-full px-6 py-6 flex items-center justify-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
+            <Hospital className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-primary-foreground tracking-tight font-sans bg-transparent">
+            <h1 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Ars Primera — Gestión de Red
             </h1>
-            <p className="text-primary-foreground/70 text-sm">
+            <p className="text-white/70 text-sm" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Sistema de Análisis Comparativo y Siniestralidad
             </p>
           </div>
