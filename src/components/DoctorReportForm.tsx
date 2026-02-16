@@ -39,7 +39,7 @@ const DoctorReportForm = ({ data, onChange, onGenerate, onClear }: Props) => {
       <div className="grid sm:grid-cols-2 gap-3">
         <Field label="Nombre del Médico *" value={data.doctorName} onChange={(v) => onChange("doctorName", v)} placeholder="Ej: DARIANA ELIZABETH ROSARIO MEJIA" />
         <Field label="Especialidad" value={data.specialty} onChange={(v) => onChange("specialty", v)} placeholder="Ej: Endocrinología" />
-        <Field label="Código Prestador" value={data.providerCode} onChange={(v) => onChange("providerCode", v)} placeholder="Ej: CÓDIGO-20048" />
+        <Field label="Cedula" value={data.providerCode} onChange={(v) => onChange("providerCode", v)} placeholder="Ej: 001-0000000-0" />
       </div>
 
       <SectionLabel text="Evaluación" />
