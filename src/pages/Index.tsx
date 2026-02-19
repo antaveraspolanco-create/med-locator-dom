@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { toPng } from "html-to-image";
 import { Download, Activity, Hospital } from "lucide-react";
-import logo from "@/assets/logo-ars-primera.png";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -118,7 +117,9 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <header className="w-full bg-[#015993] shadow-md">
         <div className="w-full px-6 py-5 flex items-center justify-center gap-4">
-          <img src={logo} alt="Ars Primera" className="h-8" />
+          <div className="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center">
+            <Hospital className="w-5 h-5 text-white" />
+          </div>
           <div>
             <h1 className="text-xl font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
               Ars Primera — Gestión de Red
