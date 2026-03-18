@@ -110,9 +110,11 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
               <p className="text-primary-foreground/70 text-xs">
                 Departamento de Gestión de Red y Contratación
               </p>
+              <p className="text-primary-foreground/60 text-[10px]">
+                Coordinación Relación PSS
+              </p>
             </div>
           </div>
-          <span className="text-primary-foreground/60 text-[10px] font-medium">MedRD</span>
         </div>
       </div>
 
