@@ -95,10 +95,8 @@ const ReportForm = ({ data, onChange, onGenerate, onClear, onAddCenter, onRemove
       <div className="grid sm:grid-cols-2 gap-3">
         <Field label="Latitud del Centro" id="centerLat" value={data.centerLat} onChange={(v) => onChange("centerLat", v)} placeholder="Ej: 18.4861" />
         <Field label="Longitud del Centro" id="centerLng" value={data.centerLng} onChange={(v) => onChange("centerLng", v)} placeholder="Ej: -69.9312" />
-        <div className="space-y-1.5 sm:col-span-2">
-          <Label htmlFor="googleApiKey">Google Maps API Key (opcional)</Label>
-          <Input id="googleApiKey" value={data.googleApiKey} onChange={(e) => onChange("googleApiKey", e.target.value)} placeholder="AIza..." />
-        </div>
+
+
       </div>
 
       {/* Section: Nearby Centers */}

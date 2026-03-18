@@ -73,7 +73,6 @@ function buildStaticMapUrl(data: ReportData): string | null {
       url += `&markers=color:blue%7Clabel:${i + 1}%7C${c.lat},${c.lng}`;
     }
   });
-  if (data.googleApiKey) url += `&key=${data.googleApiKey}`;
   return url;
 }
 

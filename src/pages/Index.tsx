@@ -36,7 +36,7 @@ const emptyReport: ReportData = {
   centerLat: "",
   centerLng: "",
   nearbyCenters: [],
-  googleApiKey: "",
+  
   kpiPacientes: "",
   kpiCosto: "",
   kpiResolutividad: "",
