@@ -94,27 +94,28 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
       className="w-[720px] bg-card rounded-lg overflow-hidden shadow-card text-card-foreground"
       style={{ fontFamily: "'Inter', sans-serif", fontSize: "13px" }}
     >
-      {/* Header */}
-      <div className="gradient-primary px-6 py-5">
+      <div className="bg-white px-6 py-4 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logoArsPrimera} alt="Ars Primera" className="h-10 object-contain" />
-            <div>
-              <h2
-                className="text-base font-bold text-primary-foreground tracking-tight"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                Resumen Ejecutivo de Siniestralidad
-              </h2>
-              <p className="text-primary-foreground/70 text-xs">
-                Departamento de Gestión de Red y Contratación
-              </p>
-              <p className="text-primary-foreground/60 text-[10px]">
-                Coordinación Relación PSS
-              </p>
-            </div>
           </div>
         </div>
+      </div>
+
+      {/* Header */}
+      <div className="gradient-primary px-6 py-4">
+        <h2
+          className="text-base font-bold text-primary-foreground tracking-tight"
+          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+        >
+          Resumen Ejecutivo de Siniestralidad
+        </h2>
+        <p className="text-primary-foreground/70 text-xs">
+          Departamento de Gestión de Red y Contratación
+        </p>
+        <p className="text-primary-foreground/60 text-[10px]">
+          Coordinación Relación PSS
+        </p>
       </div>
 
       {/* Center Info + Score */}
