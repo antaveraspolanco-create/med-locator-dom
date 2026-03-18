@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { MapPin, Building2, Calendar, Users, DollarSign, Activity, AlertTriangle, CheckCircle, XCircle, Pill } from "lucide-react";
+import logoArsPrimera from "@/assets/logo-ars-primera-report.png";
 
 export interface NearbyCenter {
   nombre: string;
