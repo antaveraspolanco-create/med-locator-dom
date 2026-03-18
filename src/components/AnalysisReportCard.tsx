@@ -36,7 +36,7 @@ export interface ReportData {
   centerLat: string;
   centerLng: string;
   nearbyCenters: NearbyCenter[];
-  googleApiKey: string;
+  
   kpiPacientes: string;
   kpiCosto: string;
   kpiResolutividad: string;
