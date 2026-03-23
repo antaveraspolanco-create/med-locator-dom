@@ -97,14 +97,41 @@ const Index = () => {
   const handleDownload = async () => {
     if (!cardRef.current) return;
     try {
-      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2 });
+      // First attempt with cacheBust to avoid CORS issues
+      const dataUrl = await toPng(cardRef.current, {
+        pixelRatio: 2,
+        cacheBust: true,
+        skipFonts: true,
+        filter: (node: HTMLElement) => {
+          // Skip Google Maps images that may cause CORS errors
+          if (node.tagName === "IMG" && node.getAttribute("src")?.includes("googleapis.com")) {
+            return false;
+          }
+          return true;
+        },
+      });
       const link = document.createElement("a");
       link.download = `analisis-${report.centerAlias || report.centerName}.png`;
       link.href = dataUrl;
       link.click();
       toast.success("Imagen descargada.");
     } catch {
-      toast.error("Error al generar la imagen.");
+      // Retry without filtering as fallback
+      try {
+        const dataUrl = await toPng(cardRef.current!, {
+          pixelRatio: 2,
+          cacheBust: true,
+          skipFonts: true,
+          imagePlaceholder: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwAJhAPk3KFb2QAAAABJRU5ErkJggg==",
+        });
+        const link = document.createElement("a");
+        link.download = `analisis-${report.centerAlias || report.centerName}.png`;
+        link.href = dataUrl;
+        link.click();
+        toast.success("Imagen descargada.");
+      } catch {
+        toast.error("Error al generar la imagen.");
+      }
     }
   };
 

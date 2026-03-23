@@ -58,7 +58,12 @@ const DoctorEvaluation = () => {
   const handleDownload = async () => {
     if (!cardRef.current) return;
     try {
-      const dataUrl = await toPng(cardRef.current, { pixelRatio: 2 });
+      const dataUrl = await toPng(cardRef.current, {
+        pixelRatio: 2,
+        cacheBust: true,
+        skipFonts: true,
+        imagePlaceholder: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwAJhAPk3KFb2QAAAABJRU5ErkJggg==",
+      });
       const link = document.createElement("a");
       link.download = `evaluacion-${report.doctorName.replace(/\s+/g, "-")}.png`;
       link.href = dataUrl;
