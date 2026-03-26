@@ -7,6 +7,13 @@ import { toast } from "sonner";
 import DominicanRepublicMap from "@/components/DominicanRepublicMap";
 import DoctorReportCard, { type DoctorReportData } from "@/components/DoctorReportCard";
 import DoctorReportForm from "@/components/DoctorReportForm";
+import ReportLookup from "@/components/ReportLookup";
+import {
+  getDoctorReports,
+  saveDoctorReport,
+  findDoctorByCode,
+  deleteDoctorReport,
+} from "@/lib/reportStorage";
 
 const emptyReport: DoctorReportData = {
   doctorName: "",
@@ -79,6 +86,48 @@ const DoctorEvaluation = () => {
     setShowCard(false);
   };
 
+  const savedItems = getDoctorReports().map((r) => ({
+    id: r.id,
+    label: r.doctorName || "Sin nombre",
+    subLabel: r.providerCode ? `Cédula/Código: ${r.providerCode}` : "Sin código",
+    savedAt: r.savedAt,
+  }));
+
+  const handleSave = () => {
+    if (!report.doctorName.trim()) {
+      toast.error("Ingresa al menos el nombre del médico para guardar.");
+      return;
+    }
+    saveDoctorReport(report);
+    toast.success("Reporte guardado correctamente.");
+  };
+
+  const handleSearchDoctor = (code: string): boolean => {
+    const found = findDoctorByCode(code);
+    if (found) {
+      setReport(found.data);
+      setShowCard(false);
+      toast.success(`Registro cargado: ${found.doctorName}`);
+      return true;
+    }
+    return false;
+  };
+
+  const handleLoadDoctor = (id: string) => {
+    const all = getDoctorReports();
+    const item = all.find((r) => r.id === id);
+    if (item) {
+      setReport(item.data);
+      setShowCard(false);
+      toast.success(`Registro cargado: ${item.doctorName}`);
+    }
+  };
+
+  const handleDeleteDoctor = (id: string) => {
+    deleteDoctorReport(id);
+    toast.success("Registro eliminado.");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="w-full bg-[#015993] shadow-md">
@@ -101,6 +150,15 @@ const DoctorEvaluation = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-6 animate-fade-in">
+            <ReportLookup
+              lookupLabel="Cédula/Código"
+              lookupPlaceholder="Buscar por cédula o código..."
+              onSearch={handleSearchDoctor}
+              onSave={handleSave}
+              savedItems={savedItems}
+              onLoad={handleLoadDoctor}
+              onDelete={handleDeleteDoctor}
+            />
             <DoctorReportForm data={report} onChange={handleChange} onGenerate={handleGenerate} onClear={handleClear} />
 
             <div className="bg-card rounded-lg p-6 shadow-card">
