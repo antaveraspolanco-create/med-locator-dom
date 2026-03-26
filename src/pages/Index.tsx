@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { toPng } from "html-to-image";
 import { Download, Activity, Hospital } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -7,6 +7,14 @@ import { toast } from "sonner";
 import DominicanRepublicMap from "@/components/DominicanRepublicMap";
 import AnalysisReportCard, { type ReportData, type NearbyCenter } from "@/components/AnalysisReportCard";
 import ReportForm from "@/components/ReportForm";
+import ReportLookup from "@/components/ReportLookup";
+import {
+  getInstitutionalReports,
+  saveInstitutionalReport,
+  findInstitutionalByRnc,
+  deleteInstitutionalReport,
+  type StoredInstitutionalReport,
+} from "@/lib/reportStorage";
 
 const emptyReport: ReportData = {
   centerName: "",
@@ -140,6 +148,48 @@ const Index = () => {
     setShowCard(false);
   };
 
+  const savedItems = getInstitutionalReports().map((r) => ({
+    id: r.id,
+    label: r.centerName || "Sin nombre",
+    subLabel: r.rnc ? `RNC: ${r.rnc}` : "Sin RNC",
+    savedAt: r.savedAt,
+  }));
+
+  const handleSave = () => {
+    if (!report.centerName.trim()) {
+      toast.error("Ingresa al menos el nombre del centro para guardar.");
+      return;
+    }
+    saveInstitutionalReport(report);
+    toast.success("Reporte guardado correctamente.");
+  };
+
+  const handleSearch = (rnc: string): boolean => {
+    const found = findInstitutionalByRnc(rnc);
+    if (found) {
+      setReport(found.data);
+      setShowCard(false);
+      toast.success(`Registro cargado: ${found.centerName}`);
+      return true;
+    }
+    return false;
+  };
+
+  const handleLoad = (id: string) => {
+    const all = getInstitutionalReports();
+    const item = all.find((r) => r.id === id);
+    if (item) {
+      setReport(item.data);
+      setShowCard(false);
+      toast.success(`Registro cargado: ${item.centerName}`);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    deleteInstitutionalReport(id);
+    toast.success("Registro eliminado.");
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <header className="w-full bg-[#015993] shadow-md">
@@ -164,6 +214,15 @@ const Index = () => {
       <main className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-6 animate-fade-in">
+            <ReportLookup
+              lookupLabel="RNC"
+              lookupPlaceholder="Buscar por RNC..."
+              onSearch={handleSearch}
+              onSave={handleSave}
+              savedItems={savedItems}
+              onLoad={handleLoad}
+              onDelete={handleDelete}
+            />
             <ReportForm
               data={report}
               onChange={handleChange}
