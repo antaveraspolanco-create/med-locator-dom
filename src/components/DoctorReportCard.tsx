@@ -84,7 +84,7 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
 
       {/* Header with logo */}
       <div className="bg-white px-6 py-3 border-b border-border flex items-center gap-4">
-        <img src={logoArsPrimera} alt="Ars Primera" style={{ height: "57px" }} className="w-auto object-contain shrink-0" />
+        <img src={logoArsPrimera} alt="Ars Primera" className="h-5 w-auto object-contain shrink-0" />
         <div className="w-full px-4 py-3 rounded-md" style={{ backgroundColor: "#015993" }}>
           <h2 className="text-base font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
             Ars Primera — Evaluación Médica
