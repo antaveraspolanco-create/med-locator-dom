@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { Activity, Calendar, Users, Building2, Stethoscope, MapPin } from "lucide-react";
+import logoArsPrimera from "@/assets/logo-ars-primera-report.png";
 
 export interface SpecialtyDistribution {
   nombre: string;
@@ -81,21 +82,15 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
       className="w-[720px] bg-card rounded-lg overflow-hidden shadow-card text-card-foreground"
       style={{ fontFamily: "'Inter', sans-serif", fontSize: "13px" }}>
 
-      {/* Header */}
-      <div className="w-full px-6 py-5" style={{ backgroundColor: "#015993" }}>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(255,255,255,0.15)" }}>
-              <Stethoscope className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h2 className="text-base font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
-                Ars Primera — Evaluación Médica
-              </h2>
-              <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'Raleway', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
-            </div>
-          </div>
-          <span className="text-[10px] font-medium" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Raleway', sans-serif" }}>Ars Primera — Gestión de Red</span>
+      {/* Header with logo */}
+      <div className="bg-white px-6 py-3 border-b border-border flex items-center gap-4">
+        <img src={logoArsPrimera} alt="Ars Primera" style={{ height: "57px" }} className="w-auto object-contain shrink-0" />
+        <div className="w-full px-4 py-3 rounded-md" style={{ backgroundColor: "#015993" }}>
+          <h2 className="text-base font-bold text-white tracking-tight" style={{ fontFamily: "'Raleway', sans-serif" }}>
+            Ars Primera — Evaluación Médica
+          </h2>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'Raleway', sans-serif" }}>Análisis Individual de Siniestralidad y Eficiencia</p>
+          <p className="text-[10px]" style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'Raleway', sans-serif" }}>Coordinación Relación PSS</p>
         </div>
       </div>
 

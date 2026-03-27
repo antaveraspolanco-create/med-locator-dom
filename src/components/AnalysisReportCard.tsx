@@ -96,7 +96,7 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
     >
       {/* Header with logo and title */}
       <div className="bg-white px-6 py-3 border-b border-border flex items-center gap-4">
-        <img src={logoArsPrimera} alt="Ars Primera" className="h-5 w-auto object-contain shrink-0" />
+        <img src={logoArsPrimera} alt="Ars Primera" style={{ height: "57px" }} className="w-auto object-contain shrink-0" />
         <div className="gradient-primary flex-1 rounded-md px-4 py-3">
           <h2
             className="text-base font-bold text-primary-foreground tracking-tight"
