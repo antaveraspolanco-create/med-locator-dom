@@ -57,6 +57,12 @@ const emptyReport: ReportData = {
 };
 
 const Index = () => {
+  useSeo({
+    title: "PSS Institucionales — Ars Primera Gestión de Red",
+    description:
+      "Análisis comparativo de prestadores institucionales: zona, competencia, complejidad y siniestralidad para la red de Ars Primera.",
+    path: "/institucionales",
+  });
   const [report, setReport] = useState<ReportData>(emptyReport);
   const [showCard, setShowCard] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);

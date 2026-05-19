@@ -42,6 +42,12 @@ const emptyReport: DoctorReportData = {
 };
 
 const DoctorEvaluation = () => {
+  useSeo({
+    title: "Evaluación Médica — Ars Primera Gestión de Red",
+    description:
+      "Evaluación individual de siniestralidad y eficiencia médica para prestadores de la red de Ars Primera.",
+    path: "/medicos",
+  });
   const [report, setReport] = useState<DoctorReportData>(emptyReport);
   const [showCard, setShowCard] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
