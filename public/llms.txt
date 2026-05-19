@@ -1,0 +1,9 @@
+# Ars Primera — Gestión de Red
+
+> Plataforma interna de Ars Primera para análisis comparativo de prestadores institucionales y evaluación de siniestralidad y eficiencia médica.
+
+## Pages
+
+- [Inicio](/): Acceso a los módulos de análisis institucional y médico.
+- [PSS Institucionales](/institucionales): Análisis comparativo de prestadores, zona, competencia y siniestralidad.
+- [Médicos](/medicos): Evaluación individual de siniestralidad y eficiencia médica.

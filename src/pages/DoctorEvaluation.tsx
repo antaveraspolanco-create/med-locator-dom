@@ -8,6 +8,7 @@ import DominicanRepublicMap from "@/components/DominicanRepublicMap";
 import DoctorReportCard, { type DoctorReportData } from "@/components/DoctorReportCard";
 import DoctorReportForm from "@/components/DoctorReportForm";
 import ReportLookup from "@/components/ReportLookup";
+import { useSeo } from "@/hooks/use-seo";
 import {
   getDoctorReports,
   saveDoctorReport,
@@ -41,6 +42,12 @@ const emptyReport: DoctorReportData = {
 };
 
 const DoctorEvaluation = () => {
+  useSeo({
+    title: "Evaluación Médica — Ars Primera Gestión de Red",
+    description:
+      "Evaluación individual de siniestralidad y eficiencia médica para prestadores de la red de Ars Primera.",
+    path: "/medicos",
+  });
   const [report, setReport] = useState<DoctorReportData>(emptyReport);
   const [showCard, setShowCard] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
