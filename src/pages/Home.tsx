@@ -1,7 +1,14 @@
 import { Hospital, Stethoscope, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSeo } from "@/hooks/use-seo";
 
 const Home = () => {
+  useSeo({
+    title: "Ars Primera — Gestión de Red | Análisis y Siniestralidad",
+    description:
+      "Plataforma de Ars Primera para análisis comparativo de prestadores institucionales y evaluación de siniestralidad y eficiencia médica.",
+    path: "/",
+  });
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <header className="w-full bg-[#015993] shadow-md">

@@ -8,6 +8,7 @@ import DominicanRepublicMap from "@/components/DominicanRepublicMap";
 import DoctorReportCard, { type DoctorReportData } from "@/components/DoctorReportCard";
 import DoctorReportForm from "@/components/DoctorReportForm";
 import ReportLookup from "@/components/ReportLookup";
+import { useSeo } from "@/hooks/use-seo";
 import {
   getDoctorReports,
   saveDoctorReport,

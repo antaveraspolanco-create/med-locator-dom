@@ -8,6 +8,7 @@ import DominicanRepublicMap from "@/components/DominicanRepublicMap";
 import AnalysisReportCard, { type ReportData, type NearbyCenter } from "@/components/AnalysisReportCard";
 import ReportForm from "@/components/ReportForm";
 import ReportLookup from "@/components/ReportLookup";
+import { useSeo } from "@/hooks/use-seo";
 import {
   getInstitutionalReports,
   saveInstitutionalReport,
