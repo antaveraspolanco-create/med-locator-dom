@@ -146,9 +146,9 @@ const ReportForm = ({ data, onChange, onGenerate, onClear, onAddCenter, onRemove
       {/* Section: KPIs */}
       <SectionLabel text="KPIs de Desempeño" />
       <div className="grid sm:grid-cols-3 gap-3">
-        <Field label="Pacientes" id="kpiPacientes" value={data.kpiPacientes} onChange={(v) => onChange("kpiPacientes", v)} placeholder="145" />
-        <Field label="Costo Promedio" id="kpiCosto" value={data.kpiCosto} onChange={(v) => onChange("kpiCosto", v)} placeholder="2,500.00" />
-        <Field label="Resolutividad (%)" id="kpiResolutividad" value={data.kpiResolutividad} onChange={(v) => onChange("kpiResolutividad", v)} placeholder="94" />
+        <Field label="Total de Afiliados" id="kpiPacientes" value={data.kpiPacientes} onChange={(v) => onChange("kpiPacientes", v)} placeholder="145" />
+        <Field label="Monto Total Distribuido" id="kpiCosto" value={data.kpiCosto} onChange={(v) => onChange("kpiCosto", v)} placeholder="2,500.00" />
+        <Field label="Siniestralidad (%)" id="kpiResolutividad" value={data.kpiResolutividad} onChange={(v) => onChange("kpiResolutividad", v)} placeholder="94" />
       </div>
 
       {/* Section: Siniestralidad */}
