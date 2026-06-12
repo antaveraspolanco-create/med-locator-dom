@@ -251,7 +251,7 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
         </h3>
         <div className="grid grid-cols-3 gap-2">
           <KpiCard label="Siniestralidad Total" value={data.siniestralityTotal || data.totalClaims ? `$[${data.siniestralityTotal || data.totalClaims}]` : ""} variant="info" />
-          <KpiCard label="Costo Promedio (CPE)" value={data.costoCPE ? `$[${data.costoCPE}]` : (data.kpiCosto ? `$${data.kpiCosto}` : "")} variant="info" />
+          <KpiCard label="Monto Total Distribuido" value={data.costoCPE ? `$[${data.costoCPE}]` : (data.kpiCosto ? `$${data.kpiCosto}` : "")} variant="info" />
           <KpiCard label="Desviación Farmacia" value={data.desviacionFarmacia || ""} variant="danger" />
         </div>
       </div>
@@ -265,8 +265,8 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
           <div className="grid grid-cols-2 gap-3">
             {data.totalAffiliates && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Total afiliados por provincia" value={data.totalAffiliates} />}
             {data.totalPSS && <IndicatorBox icon={<Building2 className="w-3.5 h-3.5" />} label="Total de PSS (Institucionales)" value={`[${data.totalPSS}]`} />}
-            {data.kpiPacientes && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Pacientes Atendidos" value={data.kpiPacientes} />}
-            {data.kpiResolutividad && <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Resolutividad" value={`${data.kpiResolutividad}%`} />}
+            {data.kpiPacientes && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Total de Afiliados" value={data.kpiPacientes} />}
+            {data.kpiResolutividad && <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Siniestralidad" value={`${data.kpiResolutividad}%`} />}
             {data.specializedCenters && <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Centros especializados" value={`+${data.specializedCenters}`} />}
           </div>
         </div>
