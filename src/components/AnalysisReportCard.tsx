@@ -249,10 +249,11 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
         <h3 className="text-xs font-bold mb-3 flex items-center gap-1.5" style={{ fontFamily: "'Space Grotesk', sans-serif", color: "#023E8A", borderBottom: "2px solid #eee", paddingBottom: "5px" }}>
           📊 Resumen de Indicadores
         </h3>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-4 gap-2">
           <KpiCard label="Siniestralidad Total" value={data.siniestralityTotal || data.totalClaims ? `$[${data.siniestralityTotal || data.totalClaims}]` : ""} variant="info" />
           <KpiCard label="Monto Total Distribuido" value={data.costoCPE ? `$[${data.costoCPE}]` : (data.kpiCosto ? `$${data.kpiCosto}` : "")} variant="info" />
           <KpiCard label="Desviación Farmacia" value={data.desviacionFarmacia || ""} variant="danger" />
+          <KpiCard label="Total de Afiliados" value={data.totalAffiliates ? `[${data.totalAffiliates}]` : ""} variant="info" />
         </div>
       </div>
 
@@ -263,7 +264,6 @@ const AnalysisReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => 
             📈 Indicadores Adicionales
           </h3>
           <div className="grid grid-cols-2 gap-3">
-            {data.totalAffiliates && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Total afiliados por provincia" value={data.totalAffiliates} />}
             {data.totalPSS && <IndicatorBox icon={<Building2 className="w-3.5 h-3.5" />} label="Total de PSS (Institucionales)" value={`[${data.totalPSS}]`} />}
             {data.kpiPacientes && <IndicatorBox icon={<Users className="w-3.5 h-3.5" />} label="Total de Afiliados" value={data.kpiPacientes} />}
             {data.kpiResolutividad && <IndicatorBox icon={<Activity className="w-3.5 h-3.5" />} label="Siniestralidad" value={`${data.kpiResolutividad}%`} />}
