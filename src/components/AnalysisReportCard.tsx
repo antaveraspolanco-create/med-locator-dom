@@ -65,13 +65,28 @@ function getScoreColor(score: number): string {
   return "#2A9D8F";
 }
 
+const COORD_RE = /^-?\d{1,3}(?:\.\d+)?$/;
+function safeCoord(v: string): string | null {
+  if (typeof v !== "string") return null;
+  const trimmed = v.trim();
+  if (!COORD_RE.test(trimmed)) return null;
+  const n = Number(trimmed);
+  if (!Number.isFinite(n) || Math.abs(n) > 180) return null;
+  return trimmed;
+}
+
 function buildStaticMapUrl(data: ReportData): string | null {
-  if (!data.centerLat || !data.centerLng) return null;
-  let url = `https://maps.googleapis.com/maps/api/staticmap?center=${data.centerLat},${data.centerLng}&zoom=14&size=680x280&maptype=roadmap&scale=2`;
-  url += `&markers=color:red%7Clabel:P%7C${data.centerLat},${data.centerLng}`;
+  const lat = safeCoord(data.centerLat);
+  const lng = safeCoord(data.centerLng);
+  if (!lat || !lng) return null;
+  const center = `${encodeURIComponent(lat)},${encodeURIComponent(lng)}`;
+  let url = `https://maps.googleapis.com/maps/api/staticmap?center=${center}&zoom=14&size=680x280&maptype=roadmap&scale=2`;
+  url += `&markers=${encodeURIComponent("color:red|label:P|" + lat + "," + lng)}`;
   data.nearbyCenters.forEach((c, i) => {
-    if (c.lat && c.lng) {
-      url += `&markers=color:blue%7Clabel:${i + 1}%7C${c.lat},${c.lng}`;
+    const cLat = safeCoord(c.lat);
+    const cLng = safeCoord(c.lng);
+    if (cLat && cLng) {
+      url += `&markers=${encodeURIComponent(`color:blue|label:${i + 1}|${cLat},${cLng}`)}`;
     }
   });
   return url;
