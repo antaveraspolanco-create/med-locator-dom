@@ -214,9 +214,9 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
       <div className="px-6 py-4 border-b border-border">
         <SectionHeader emoji="📊" title="KPIs de Gestión Clínica" />
         <div className="grid grid-cols-3 gap-2">
-          <KpiBox label="Total Médicos" value={data.totalDoctors} />
-          <KpiBox label="Total Institucionales" value={data.totalInstitutional} />
-          <KpiBox label="Total Prestadores" value={data.totalProviders} />
+          <KpiBox label="Médicos por Especialidad" value={data.totalDoctors} />
+          <KpiBox label="Especialidad monto distribuido" value={data.totalInstitutional} />
+          <KpiBox label="Médicos en provincia" value={data.totalProviders} />
         </div>
       </div>
 
