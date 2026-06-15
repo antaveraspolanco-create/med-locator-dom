@@ -111,9 +111,9 @@ const DoctorReportForm = ({ data, onChange, onGenerate, onClear }: Props) => {
 
       <SectionLabel text="KPIs de Gestión" />
       <div className="grid sm:grid-cols-3 gap-3">
-        <Field label="Total Médicos" value={data.totalDoctors} onChange={(v) => onChange("totalDoctors", v)} placeholder="6,748" />
-        <Field label="Total Institucionales" value={data.totalInstitutional} onChange={(v) => onChange("totalInstitutional", v)} placeholder="2,232" />
-        <Field label="Total Prestadores" value={data.totalProviders} onChange={(v) => onChange("totalProviders", v)} placeholder="8,980" />
+        <Field label="Médicos por Especialidad" value={data.totalDoctors} onChange={(v) => onChange("totalDoctors", v)} placeholder="6,748" />
+        <Field label="Especialidad monto distribuido" value={data.totalInstitutional} onChange={(v) => onChange("totalInstitutional", v)} placeholder="2,232" />
+        <Field label="Médicos en provincia" value={data.totalProviders} onChange={(v) => onChange("totalProviders", v)} placeholder="8,980" />
       </div>
 
       <SectionLabel text="Dictamen Técnico" />
