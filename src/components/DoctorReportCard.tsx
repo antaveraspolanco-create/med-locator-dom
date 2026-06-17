@@ -82,6 +82,7 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
   const today = new Date().toLocaleDateString("es-DO", { year: "numeric", month: "long", day: "numeric" });
   const scoreColor = getScoreColor(data.score);
   const sc = statusConfig[data.status];
+  const [provinceLevel, setProvinceLevel] = useState<"provincia" | "municipio">("provincia");
 
   return (
     <div
