@@ -36,6 +36,7 @@ const emptyReport: DoctorReportData = {
   totalDoctors: "",
   totalInstitutional: "",
   totalProviders: "",
+  municipalityBreakdown: [],
   dictamen: "",
   province: null,
   provinceName: null

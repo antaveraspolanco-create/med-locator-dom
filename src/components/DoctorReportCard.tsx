@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, useState } from "react";
 import { Activity, Calendar, Users, Building2, Stethoscope, MapPin } from "lucide-react";
 import logoArsPrimera from "@/assets/logo-ars-primera-report.png";
 
@@ -19,6 +19,12 @@ export interface ProvinceDistribution {
 
 export interface AffiliateDistribution {
   nombre: string;
+  cantidad: string;
+}
+
+export interface MunicipalityBreakdown {
+  provincia: string;
+  municipio: string;
   cantidad: string;
 }
 
@@ -48,7 +54,8 @@ export interface DoctorReportData {
   totalDoctors: string;
   totalInstitutional: string;
   totalProviders: string;
-  // Recommendation
+  // Municipality breakdown for "Médicos en provincia"
+  municipalityBreakdown: MunicipalityBreakdown[];
   dictamen: string;
   // Province map
   province: string | null;
@@ -75,6 +82,7 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
   const today = new Date().toLocaleDateString("es-DO", { year: "numeric", month: "long", day: "numeric" });
   const scoreColor = getScoreColor(data.score);
   const sc = statusConfig[data.status];
+  const [provinceLevel, setProvinceLevel] = useState<"provincia" | "municipio">("provincia");
 
   return (
     <div
@@ -218,7 +226,51 @@ const DoctorReportCard = forwardRef<HTMLDivElement, Props>(({ data }, ref) => {
           <KpiBox label="Especialidad monto distribuido" value={data.totalInstitutional} />
           <KpiBox label="Médicos en provincia" value={data.totalProviders} />
         </div>
+
+        {/* Province / Municipality level selector */}
+        {(data.municipalityBreakdown?.length > 0 || data.totalProviders) && (
+          <div className="mt-3 rounded-md p-3" style={{ backgroundColor: "hsl(210 40% 98%)", border: "1px solid hsl(var(--border))" }}>
+            <div className="flex items-center justify-between mb-2 gap-2">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Desglose "Médicos en provincia"
+              </p>
+              <select
+                value={provinceLevel}
+                onChange={(e) => setProvinceLevel(e.target.value as "provincia" | "municipio")}
+                className="text-[11px] px-2 py-1 rounded border border-border bg-white"
+                style={{ color: "#015993" }}
+              >
+                <option value="provincia">Nivel: Provincia</option>
+                <option value="municipio">Nivel: Municipio</option>
+              </select>
+            </div>
+
+            {provinceLevel === "provincia" ? (
+              <div className="flex items-center justify-between py-1">
+                <span className="text-xs flex items-center gap-1.5">
+                  <MapPin className="w-3 h-3 text-primary" /> Total médicos en provincia
+                </span>
+                <span className="text-xs font-bold" style={{ color: "#0096C7" }}>[{data.totalProviders}]</span>
+              </div>
+            ) : data.municipalityBreakdown?.length ? (
+              <div>
+                {data.municipalityBreakdown.map((m, i) => (
+                  <div key={i} className="flex items-center justify-between py-1 border-b border-border last:border-0">
+                    <span className="text-xs flex items-center gap-1.5">
+                      <MapPin className="w-3 h-3 text-primary" />
+                      [{m.provincia}] · {m.municipio}
+                    </span>
+                    <span className="text-xs font-bold">[{m.cantidad}]</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-[11px] text-muted-foreground italic">Sin desglose por municipio.</p>
+            )}
+          </div>
+        )}
       </div>
+
 
       {/* Dictamen */}
       <div className="px-6 py-4 border-b border-border">
