@@ -22,6 +22,12 @@ export interface AffiliateDistribution {
   cantidad: string;
 }
 
+export interface MunicipalityBreakdown {
+  provincia: string;
+  municipio: string;
+  cantidad: string;
+}
+
 export interface DoctorReportData {
   doctorName: string;
   specialty: string;
