@@ -54,7 +54,8 @@ export interface DoctorReportData {
   totalDoctors: string;
   totalInstitutional: string;
   totalProviders: string;
-  // Recommendation
+  // Municipality breakdown for "Médicos en provincia"
+  municipalityBreakdown: MunicipalityBreakdown[];
   dictamen: string;
   // Province map
   province: string | null;
