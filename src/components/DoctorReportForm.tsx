@@ -118,7 +118,7 @@ const DoctorReportForm = ({ data, onChange, onGenerate, onClear }: Props) => {
 
       <SectionLabel text="Desglose Médicos por Municipio (dentro de provincia)" />
       <DynamicList
-        items={data.municipalityBreakdown}
+        items={data.municipalityBreakdown || []}
         fields={[
           { key: "provincia", label: "Provincia", placeholder: "Santo Domingo" },
           { key: "municipio", label: "Municipio", placeholder: "Santo Domingo Este" },
