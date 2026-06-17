@@ -116,6 +116,19 @@ const DoctorReportForm = ({ data, onChange, onGenerate, onClear }: Props) => {
         <Field label="Médicos en provincia" value={data.totalProviders} onChange={(v) => onChange("totalProviders", v)} placeholder="8,980" />
       </div>
 
+      <SectionLabel text="Desglose Médicos por Municipio (dentro de provincia)" />
+      <DynamicList
+        items={data.municipalityBreakdown}
+        fields={[
+          { key: "provincia", label: "Provincia", placeholder: "Santo Domingo" },
+          { key: "municipio", label: "Municipio", placeholder: "Santo Domingo Este" },
+          { key: "cantidad", label: "Cantidad", placeholder: "120" },
+        ]}
+        onAdd={() => addItem("municipalityBreakdown", { provincia: "", municipio: "", cantidad: "" })}
+        onRemove={(i) => removeItem("municipalityBreakdown", i)}
+        onUpdate={(i, k, v) => updateItem("municipalityBreakdown", i, k, v)}
+      />
+
       <SectionLabel text="Dictamen Técnico" />
       <div className="space-y-1.5">
         <Label>Dictamen</Label>
